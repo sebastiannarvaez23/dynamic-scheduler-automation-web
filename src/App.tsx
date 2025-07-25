@@ -1,12 +1,20 @@
 import { Fragment } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
+
+import TaskingPage from './features/execution/tasking/pages/Tasking.page';
+import HistoryPage from './features/execution/history/pages/History.page';
+
 import './App.css';
-import { LayoutPage } from './core/components/LayoutPage.component';
 
 function App() {
 
   return (
     <Fragment>
-      <LayoutPage><h1>Hola mundo</h1></LayoutPage>
+      <Routes>
+        <Route path="/" element={<Navigate to="/tasking" replace />} />
+        <Route path="/tasking" element={<TaskingPage />} />
+        <Route path="/history" element={<HistoryPage />} />
+      </Routes>
     </Fragment>
   );
 };

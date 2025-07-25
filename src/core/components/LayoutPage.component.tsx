@@ -7,10 +7,8 @@ interface LayoutPageProps {
 export const LayoutPage = (props: LayoutPageProps) => {
     return (
         <Fragment>
-            <div className="bg-white flex p-6 shadow-sm">
-                Scheduler Automation
-            </div>
-            <div className="flex h-screen">
+            <div className="bg-white flex p-6 shadow-sm">Scheduler Automation</div>
+            <div className="flex flex-row min-h-screen">
                 <div className="p-6 w-60 border-r border-gray-200 shadow-sm">
                     <h6 className="mb-4 font-bold">Opciones</h6>
                     <ul>
@@ -32,7 +30,7 @@ export const LayoutPage = (props: LayoutPageProps) => {
                         </li>
                     </ul>
                 </div>
-                <div className="p-6">{props.children}</div>
+                <div className="flex-1 p-6 overflow-auto">{props.children}</div>
             </div>
         </Fragment>
     );
