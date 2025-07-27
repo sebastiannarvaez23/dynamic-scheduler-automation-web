@@ -5,38 +5,40 @@ interface ButtonComponentProps {
     action: () => void;
 }
 
-const ButtonComponent = (props: ButtonComponentProps) => {
+const ButtonComponent = ({ label, action }: ButtonComponentProps) => {
     return (
         <Fragment>
-            <button onClick={props.action} type="button" className="
-                active:bg-blue-800
-                active:scale-100
-                bg-blue-600
-                duration-700
-                ease-in-out
-                focus:outline-none
-                focus:ring-2
-                focus:ring-blue-300
-                font-medium
-                hover:bg-blue-700
-                hover:bg-blue-700
-                hover:scale-102
-                hover:shadow-lg
-                m-1
-                px-4 py-2
-                rounded
-                rounded
-                shadow
-                shadow-md
-                text-white
-                transform
-                transition-all
-                transition-shadow
-                transition-transform
-                w-fit
-            ">{props.label}</button>
+            <button
+                onClick={action}
+                type="button"
+                className={`
+                    bg-[#1a1a1a]
+                    border
+                    border-transparent
+                    rounded-[8px]
+                    px-[1.2em]
+                    py-[0.6em]
+                    text-[1em]
+                    font-medium
+                    font-inherit
+                    text-white
+                    transition
+                    transition-colors
+                    duration-200
+                    hover:border-[#646cff]
+                    hover:shadow-2xs
+                    focus:outline
+                    focus:outline-[4px]
+                    focus:outline-auto
+                    focus:outline-webkit-focus-ring-color
+                    cursor-pointer
+                    m-1
+                    `}
+            >
+                {label}
+            </button>
         </Fragment>
     );
-}
+};
 
 export default ButtonComponent;

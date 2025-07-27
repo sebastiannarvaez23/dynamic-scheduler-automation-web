@@ -1,13 +1,17 @@
-import { Fragment } from "react/jsx-runtime";
+import { Fragment, useState } from "react";
 
 import type { Header } from "../interfaces/header.interface";
 import TableFiltersComponent from "./TableFilters.component";
+import PaginationComponent from "./TablePagination.component";
 
 interface TableComponentProps {
     headers: Header[]
 }
 
 const TableComponent = (props: TableComponentProps) => {
+
+    const [currentPage, setCurrentPage] = useState(1);
+
     return (
         <Fragment>
             <TableFiltersComponent headers={props.headers} />
@@ -115,6 +119,13 @@ const TableComponent = (props: TableComponentProps) => {
                     </tbody>
                 </table>
             </div>
+
+            <PaginationComponent
+                currentPage={2}
+                totalPages={10}
+                totalRecords={123}
+                onPageChange={(newPage) => setCurrentPage(newPage)}
+            />
         </Fragment>
     );
 }

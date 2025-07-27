@@ -24,7 +24,6 @@ const HistoryPage = () => {
                 <TitlePage title="Historial de ejecuciones" />
                 <div className="w-full my-5 px-10 text-right">
                     <ButtonComponent label="Limpiar filtros" action={() => alert("Presionaste en limpiar filtros")} />
-                    <ButtonComponent label="Crear tarea" action={() => alert("Presionaste en crear tarea")} />
                 </div>
                 <div>
                     <TableComponent headers={headers} />
