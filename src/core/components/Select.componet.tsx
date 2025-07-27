@@ -14,7 +14,6 @@ const SelectComponent = (props: SelectComponentProps) => {
                     <option value="E">Ejecutandose</option>
                     <option value="F">Terminado</option>
                 </select>
-
             </div>
         </Fragment>
     );
