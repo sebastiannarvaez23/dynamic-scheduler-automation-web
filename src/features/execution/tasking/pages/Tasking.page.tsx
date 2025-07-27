@@ -3,8 +3,19 @@ import { LayoutPage } from "../../../../core/components/LayoutPage.component";
 import { TitlePage } from "../../../../core/components/TitlePage.component";
 import ButtonComponent from "../../../../core/components/Button.component";
 import TableComponent from "../../../../core/components/Table.component";
+import type { Header } from "../../../../core/interfaces/header.interface";
 
 const TaskingPage = () => {
+
+    const headers: Header[] = [
+        { label: 'Nombre' },
+        { label: 'Descripción' },
+        { label: 'Hora ejecución' },
+        { label: 'Activo' },
+        { label: '' },
+        { label: '' },
+    ]
+
     return (
         <Fragment>
             <LayoutPage>
@@ -13,7 +24,7 @@ const TaskingPage = () => {
                     <ButtonComponent label="Crear tarea" action={() => alert("Presionaste en crear tarea")} />
                 </div>
                 <div>
-                    <TableComponent />
+                    <TableComponent headers={headers} />
                 </div>
             </LayoutPage>
         </Fragment>
