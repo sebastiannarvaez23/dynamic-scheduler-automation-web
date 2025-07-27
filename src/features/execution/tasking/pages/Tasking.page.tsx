@@ -9,12 +9,12 @@ import type { Header } from "../../../../core/interfaces/header.interface";
 const TaskingPage = () => {
 
     const headers: Header[] = [
-        { label: 'Nombre', typeFilter: 'input' },
-        { label: 'Descripción', typeFilter: 'input' },
-        { label: 'Hora ejecución', typeFilter: 'time' },
-        { label: 'Activo', typeFilter: 'toggle' },
-        { label: null, typeFilter: null },
-        { label: null, typeFilter: null },
+        { label: 'Nombre', typeFilter: 'input', filter: true },
+        { label: 'Descripción', typeFilter: 'input', filter: true },
+        { label: 'Hora ejecución', typeFilter: 'time', filter: true },
+        { label: 'Activo', typeFilter: 'toggle', filter: true },
+        { label: null, typeFilter: null, filter: true },
+        { label: null, typeFilter: null, filter: true },
     ]
 
     return (
@@ -22,6 +22,7 @@ const TaskingPage = () => {
             <LayoutPage>
                 <TitlePage title="Tareas programadas" />
                 <div className="w-full my-5 px-10 text-right">
+                    <ButtonComponent label="Limpiar filtros" action={() => alert("Presionaste en limpiar filtros")} />
                     <ButtonComponent label="Crear tarea" action={() => alert("Presionaste en crear tarea")} />
                 </div>
                 <div>

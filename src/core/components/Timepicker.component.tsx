@@ -4,7 +4,7 @@ interface TimeComponentProps {
     label: string;
 }
 
-const TimeComponent = (props: TimeComponentProps) => {
+const TimepickerComponent = (props: TimeComponentProps) => {
     return (
         <Fragment>
             <div className="p-2 my-3">
@@ -18,4 +18,4 @@ const TimeComponent = (props: TimeComponentProps) => {
     );
 }
 
-export default TimeComponent;
+export default TimepickerComponent;

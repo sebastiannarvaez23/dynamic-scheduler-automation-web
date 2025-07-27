@@ -5,6 +5,7 @@ import TaskingPage from './features/execution/tasking/pages/Tasking.page';
 import HistoryPage from './features/execution/history/pages/History.page';
 
 import './App.css';
+import "react-datepicker/dist/react-datepicker.css";
 
 function App() {
 

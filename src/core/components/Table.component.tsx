@@ -29,16 +29,16 @@ const TableComponent = (props: TableComponentProps) => {
                     <tbody>
                         <tr className="bg-white border-b border-gray-200 hover:bg-gray-50">
                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                Apple MacBook Pro 17"
+                                Proceso auntomatico 001
                             </th>
                             <td className="px-6 py-4">
-                                Silver
+                                Proceso encargado del envío de emails a los proveedores
                             </td>
                             <td className="px-6 py-4">
-                                Laptop
+                                12:00 p.m.
                             </td>
                             <td className="px-6 py-4">
-                                $2999
+                                S
                             </td>
                             <td className="px-6 py-4 text-right">
                                 <a href="#" className="font-medium text-blue-600 hover:underline">
@@ -58,16 +58,16 @@ const TableComponent = (props: TableComponentProps) => {
                         </tr>
                         <tr className="bg-white border-b border-gray-200 hover:bg-gray-50">
                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                Microsoft Surface Pro
+                                Proceso auntomatico 002
                             </th>
                             <td className="px-6 py-4">
-                                White
+                                Proceso encargado del cierre de caja
                             </td>
                             <td className="px-6 py-4">
-                                Laptop PC
+                                9:00 p.m.
                             </td>
                             <td className="px-6 py-4">
-                                $1999
+                                S
                             </td>
                             <td className="px-6 py-4 text-right">
                                 <a href="#" className="font-medium text-blue-600 hover:underline">
@@ -87,16 +87,16 @@ const TableComponent = (props: TableComponentProps) => {
                         </tr>
                         <tr className="bg-white hover:bg-gray-50">
                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                Magic Mouse 2
+                                Proceso auntomatico 003
                             </th>
                             <td className="px-6 py-4">
-                                Black
+                                Proceso encargado del cierre contable del día
                             </td>
                             <td className="px-6 py-4">
-                                Accessories
+                                5:30 p.m.
                             </td>
                             <td className="px-6 py-4">
-                                $99
+                                N
                             </td>
                             <td className="px-6 py-4 text-right">
                                 <a href="#" className="font-medium text-blue-600 hover:underline">

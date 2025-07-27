@@ -1,8 +1,11 @@
 import { Fragment, useEffect, useState } from "react";
+
+import DatepickerComponent from "./Datepicker.component";
 import DbounceComponent from "./Dbounce.component";
-import type { Header } from "../interfaces/header.interface";
+import SelectComponent from "./Select.componet";
+import TimepickerComponent from "./Timepicker.component";
 import ToggleComponent from "./Toggle.component";
-import TimeComponent from "./Time.component";
+import type { Header } from "../interfaces/header.interface";
 
 interface TableFiltersComponentProps {
     headers: Header[];
@@ -54,24 +57,21 @@ const TableFiltersComponent = ({ headers, onFiltersChange }: TableFiltersCompone
                         case "select":
                             return (
                                 <div key={key} className="flex flex-col">
-                                    <label htmlFor={key} className="text-sm text-gray-700">{header.label}</label>
-                                    <select
-                                        id={key}
-                                        value={filters[key] || ""}
-                                        onChange={(e) => handleChange(key, e.target.value)}
-                                        className="text-sm border border-gray-300 rounded p-1"
-                                    >
-                                        <option value="">Todos</option>
-                                        <option value="option1">Opción 1</option>
-                                        <option value="option2">Opción 2</option>
-                                    </select>
+                                    <SelectComponent label={header.label} />
                                 </div>
                             );
 
                         case "time":
                             return (
                                 <div key={key} className="flex flex-col">
-                                    <TimeComponent label={header.label} />
+                                    <TimepickerComponent label={header.label} />
+                                </div>
+                            );
+
+                        case "date":
+                            return (
+                                <div key={key} className="flex flex-col">
+                                    <DatepickerComponent label={header.label} />
                                 </div>
                             );
 

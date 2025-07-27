@@ -1,4 +1,5 @@
 export interface Header {
     label: string | null;
-    typeFilter: 'input' | 'toggle' | 'select' | 'time' | null;
+    filter: boolean;
+    typeFilter: 'input' | 'toggle' | 'select' | 'time' | 'date' | null;
 }
