@@ -21,11 +21,7 @@ const TaskingPage = () => {
         { label: undefined, field: undefined, typeFilter: undefined, filter: true },
     ]
 
-    const { tasks } = useTask();
-
-    useEffect(() => {
-        console.log(tasks);
-    }, []);
+    const { tasks, count } = useTask();
 
     return (
         <Fragment>
@@ -36,7 +32,7 @@ const TaskingPage = () => {
                     <ButtonComponent label="Crear tarea" action={() => alert("Presionaste en crear tarea")} />
                 </div>
                 <div>
-                    <TableComponent headers={headers} data={tasks} />
+                    <TableComponent headers={headers} data={tasks} totalElements={count} />
                 </div>
             </LayoutPage>
         </Fragment>
