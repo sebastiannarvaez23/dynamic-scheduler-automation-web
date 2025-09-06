@@ -26,7 +26,7 @@ const ButtonComponent = ({ label, action }: ButtonComponentProps) => {
                     transition-colors
                     duration-200
                     hover:border-[#646cff]
-                    hover:shadow-2xs
+                    hover:shadow-xl
                     focus:outline
                     focus:outline-[4px]
                     focus:outline-auto
