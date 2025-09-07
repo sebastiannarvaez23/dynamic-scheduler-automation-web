@@ -2,15 +2,16 @@ import { Fragment } from "react/jsx-runtime";
 
 interface ButtonComponentProps {
     label: string;
+    type: "submit" | "reset" | "button" | undefined;
     action: () => void;
 }
 
-const ButtonComponent = ({ label, action }: ButtonComponentProps) => {
+const ButtonComponent = (props: ButtonComponentProps) => {
     return (
         <Fragment>
             <button
-                onClick={action}
-                type="button"
+                onClick={props.action}
+                type={props.type}
                 className={`
                     bg-[#1a1a1a]
                     border
@@ -35,7 +36,7 @@ const ButtonComponent = ({ label, action }: ButtonComponentProps) => {
                     m-1
                     `}
             >
-                {label}
+                {props.label}
             </button>
         </Fragment>
     );

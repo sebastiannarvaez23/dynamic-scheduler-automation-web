@@ -1,7 +1,8 @@
-import type { AppDispatch, RootState } from "../../store";
 import { fetchCreateTask, fetchDeleteTask, fetchGetTask, fetchGetTasks, fetchUpdateTask } from '../../../features/execution/tasking/services/task.service';
 import { setPage, setFilter, setTasks, startLoadingTasks, setTaskSelected, startLoadingTasksSelected, setEmptyTaskSelected, setCount } from "./task.slice";
 import { uribuild } from "../../../utils/params/uribuild";
+
+import type { AppDispatch, RootState } from "../../store";
 import type { Task } from "../../../features/execution/tasking/interfaces/task.interface";
 
 
@@ -18,7 +19,6 @@ export const getTasks = (page: number = 0, name?: string) => {
                 await dispatch(setFilter({ filter: name }));
                 //if (!name && tasks.rows.length === 0) dispatch(setAlert({ type: 'warning', message: 'No hay personajes almacenados' }));
                 //else if (name && tasks.rows.length === 0) dispatch(setAlert({ type: 'warning', message: 'No existen personajes para los filtros especificados' }));
-                if (tasks.content[0].id) dispatch(getTask(tasks.content[0].id));
             }
         } catch (error: any) {
             //dispatch(setAlert({ type: 'error', message: 'Ocurrió un error oteniendo la lista de Personajes' }));
