@@ -10,6 +10,7 @@ import FormToggleComponent from "../../../../core/components/FormToggle.componen
 import useTask from "../hooks/useTask.hook";
 
 import type { Task } from "../interfaces/task.interface";
+import { timeToCron } from "../../../../utils/cron/timepicker-convert.util";
 
 interface FormCreateTaskProps {
     action: (data: Task) => void;
@@ -26,7 +27,7 @@ const FormCreateTask = (props: FormCreateTaskProps) => {
         description: Yup.string()
             .required("La descripción es requerida")
             .max(100, "La descripción no puede tener más de 100 caracteres"),
-        cronExpresion: Yup.string()
+        cronExpression: Yup.string()
             .required("La hora de ejecución es requerida"),
     });
 
@@ -35,7 +36,7 @@ const FormCreateTask = (props: FormCreateTaskProps) => {
             id: taskSelected.id,
             name: taskSelected.name,
             description: taskSelected.description,
-            cronExpresion: taskSelected.cronExpresion,
+            cronExpression: taskSelected.cronExpression,
             active: taskSelected.active
         },
         validationSchema,
@@ -43,7 +44,11 @@ const FormCreateTask = (props: FormCreateTaskProps) => {
     });
 
     const handleSubmit = async (task: Task) => {
-        props.action(task);
+        const taskToSend: Task = {
+            ...task,
+            cronExpression: timeToCron(task.cronExpression)
+        };
+        props.action(taskToSend);
     };
 
     return (
@@ -70,16 +75,21 @@ const FormCreateTask = (props: FormCreateTaskProps) => {
                         <FormTimepickerComponent
                             label="Hora de ejecución"
                             placeholder="Especifique la hora de ejecución"
-                            name="executionHour"
-                            id="executionHourId"
-                            value={formik.values.cronExpresion}
-                            error={formik.touched.cronExpresion!! && Boolean(formik.errors.cronExpresion)}
-                            helperText={formik.touched.cronExpresion && formik.errors.cronExpresion}
+                            name="cronExpression"
+                            id="cronExpressionId"
+                            value={formik.values.cronExpression}
+                            error={formik.touched.cronExpression!! && Boolean(formik.errors.cronExpression)}
+                            helperText={formik.touched.cronExpression && formik.errors.cronExpression}
                             onChange={formik.handleChange}
                         />
                     </div>
                     <div className="col-span-2 sm:col-span-1 flex items-center mx-4">
-                        <FormToggleComponent label="Activo" />
+                        <FormToggleComponent
+                            label="Activo"
+                            name="active"
+                            value={formik.values.active}
+                            onChange={formik.handleChange}
+                        />
                     </div>
                 </div>
                 <div className="mt-7">

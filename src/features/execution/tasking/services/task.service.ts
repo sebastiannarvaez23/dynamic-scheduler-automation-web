@@ -21,19 +21,16 @@ export const fetchGetTask = async (id: string): Promise<Task> => {
     return response.data;
 };
 
-export const fetchCreateTask = async (task: FormData): Promise<Task> => {
-    task.delete('id');
-    const response = await api.post('/task', task, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-    })
+export const fetchCreateTask = async (task: Task): Promise<Task> => {
+    const { id, ...rest } = task;
+    const response = await api.post('/task', rest)
         .catch(customCatch)
     return response.data;
 };
 
-export const fetchUpdateTask = async (task: FormData): Promise<Task> => {
-    const id = task.get('id');
-    task.delete('id');
-    const response = await api.put(`/task/${id}`, task, {
+export const fetchUpdateTask = async (task: Task): Promise<Task> => {
+    const { id, ...rest } = task;
+    const response = await api.put(`/task/${id}`, rest, {
         headers: { 'Content-Type': 'multipart/form-data' }
     })
         .catch(customCatch)

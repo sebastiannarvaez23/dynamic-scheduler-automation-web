@@ -31,7 +31,7 @@ const FormTimepickerComponent = (props: FormTimeComponentProps) => {
                     value={props.value}
                     onChange={props.onChange}
                     className={`bg-gray-50 border text-gray-900 text-sm rounded-lg block w-full p-2.5
-            ${props.error
+                    ${props.error
                             ? "border-red-500 focus:ring-red-500 focus:border-red-500"
                             : "border-gray-300 focus:ring-primary-600 focus:border-primary-600"
                         }`}

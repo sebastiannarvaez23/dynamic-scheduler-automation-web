@@ -22,7 +22,7 @@ const initialState: TaskState = {
         id: undefined,
         name: "",
         description: "",
-        cronExpresion: "",
+        cronExpression: "",
         active: false,
     },
     page: 1,

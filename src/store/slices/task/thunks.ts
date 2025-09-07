@@ -41,7 +41,7 @@ export const getTask = (id: string) => {
     };
 };
 
-export const createTask = (task: FormData, page: number = 1) => {
+export const createTask = (task: Task, page: number = 1) => {
     return async (dispatch: AppDispatch) => {
         try {
             const taskCreated: Task = await fetchCreateTask(task);
@@ -53,7 +53,7 @@ export const createTask = (task: FormData, page: number = 1) => {
     };
 };
 
-export const updateTask = (task: FormData, page: number = 1) => {
+export const updateTask = (task: Task, page: number = 1) => {
     return async (dispatch: AppDispatch) => {
         try {
             const taskUpdated = await fetchUpdateTask(task);

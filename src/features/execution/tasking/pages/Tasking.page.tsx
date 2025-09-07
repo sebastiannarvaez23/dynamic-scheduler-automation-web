@@ -10,6 +10,7 @@ import TableComponent from "../../../../core/components/Table.component";
 import useTask from "../hooks/useTask.hook";
 
 import type { Header } from "../../../../core/interfaces/header.interface";
+import type { Task } from "../interfaces/task.interface";
 
 
 const TaskingPage = () => {
@@ -25,7 +26,7 @@ const TaskingPage = () => {
         { label: undefined, field: undefined, typeFilter: undefined, filter: true },
     ];
 
-    const { tasks, count } = useTask();
+    const { tasks, count, handleCreateTask } = useTask();
 
     return (
         <Fragment>
@@ -36,7 +37,7 @@ const TaskingPage = () => {
                     open={modalCreate}
                     setOpen={setModalCreate}>
                     <FormCreateTask
-                        action={() => { }} />
+                        action={(task: Task) => handleCreateTask(task, 0)} />
                 </ModalComponent>
                 <div className="w-full my-5 px-10 text-right">
                     <ButtonComponent

@@ -2,6 +2,6 @@ export interface Task {
     id?: string;
     name: string;
     description: string;
-    cronExpresion: string;
+    cronExpression: string;
     active: boolean;
 }

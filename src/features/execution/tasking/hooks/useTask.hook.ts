@@ -25,6 +25,10 @@ function useTask() {
 
     const taskEmpty: Task = {
         id: undefined,
+        name: "",
+        description: "",
+        cronExpression: "",
+        active: false,
     }
 
     const handleGetTasks = (page: number, name?: string) => {
@@ -51,10 +55,10 @@ function useTask() {
         setModalCreateTask(false);
     };
 
-    const handleCreateTask = (task: FormData, page: number) => {
+    const handleCreateTask = (task: Task, page: number) => {
         dispatch(createTask(task, page));
     }
-    const handleUpdateTask = (task: FormData, page: number) => {
+    const handleUpdateTask = (task: Task, page: number) => {
         dispatch(updateTask(task, page));
     }
 
