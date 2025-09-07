@@ -1,8 +1,10 @@
 import { Fragment, useState } from "react";
 
-import type { Header } from "../interfaces/header.interface";
-import TableFiltersComponent from "./TableFilters.component";
+import { cronToTime } from "../../utils/cron/timepicker-convert.util";
 import PaginationComponent from "./TablePagination.component";
+import TableFiltersComponent from "./TableFilters.component";
+
+import type { Header } from "../interfaces/header.interface";
 
 interface TableComponentProps {
     headers: Header[],
@@ -42,7 +44,7 @@ const TableComponent = (props: TableComponentProps) => {
                                 {e.description}
                             </td>
                             <td className="px-6 py-4">
-                                {e.cronExpression}
+                                {cronToTime(e.cronExpression)}
                             </td>
                             <td className="px-6 py-4">
                                 {e.active ? 'S' : 'N'}

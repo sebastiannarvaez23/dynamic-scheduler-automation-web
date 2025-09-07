@@ -46,6 +46,7 @@ export const createTask = (task: Task, page: number = 1) => {
         try {
             const taskCreated: Task = await fetchCreateTask(task);
             await dispatch(getTasks(page));
+            return taskCreated;
             // await dispatch(setAlert({ type: 'success', message: `Personaje "${taskCreated.name}" creado exitosamente!` }));
         } catch (error: any) {
             //dispatch(setAlert({ type: 'error', message: 'Ocurrió un error creando el personaje.' }));

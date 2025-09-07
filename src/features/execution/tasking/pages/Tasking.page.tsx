@@ -15,8 +15,6 @@ import type { Task } from "../interfaces/task.interface";
 
 const TaskingPage = () => {
 
-    const [modalCreate, setModalCreate] = useState<boolean>(false);
-
     const headers: Header[] = [
         { label: 'Nombre', field: "name", typeFilter: 'input', filter: true },
         { label: 'Descripción', field: "description", typeFilter: 'input', filter: true },
@@ -26,7 +24,7 @@ const TaskingPage = () => {
         { label: undefined, field: undefined, typeFilter: undefined, filter: true },
     ];
 
-    const { tasks, count, handleCreateTask } = useTask();
+    const { tasks, count, handleCreateTask, modalCreateTask, setModalCreateTask } = useTask();
 
     return (
         <Fragment>
@@ -34,8 +32,8 @@ const TaskingPage = () => {
                 <TitlePage title="Tareas programadas" />
                 <ModalComponent
                     title={"Crear tarea"}
-                    open={modalCreate}
-                    setOpen={setModalCreate}>
+                    open={modalCreateTask}
+                    setOpen={setModalCreateTask}>
                     <FormCreateTask
                         action={(task: Task) => handleCreateTask(task, 0)} />
                 </ModalComponent>
@@ -47,7 +45,7 @@ const TaskingPage = () => {
                     <ButtonComponent
                         label="Crear tarea"
                         type="button"
-                        action={() => setModalCreate(true)} />
+                        action={() => setModalCreateTask(true)} />
                 </div>
                 <div>
                     <TableComponent headers={headers} data={tasks} totalElements={count} />

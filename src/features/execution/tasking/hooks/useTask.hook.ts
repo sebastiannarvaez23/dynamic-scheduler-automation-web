@@ -56,8 +56,13 @@ function useTask() {
     };
 
     const handleCreateTask = (task: Task, page: number) => {
-        dispatch(createTask(task, page));
-    }
+        dispatch(createTask(task, page))
+            .then((taskCreated) => {
+                if (taskCreated) setModalCreateTask(false);
+            })
+            .catch((err) => console.error("Error creando la tarea", err));
+    };
+
     const handleUpdateTask = (task: Task, page: number) => {
         dispatch(updateTask(task, page));
     }
