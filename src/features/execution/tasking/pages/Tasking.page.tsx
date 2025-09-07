@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 
 import { LayoutPage } from "../../../../core/components/LayoutPage.component";
@@ -24,7 +23,8 @@ const TaskingPage = () => {
         { label: undefined, field: undefined, typeFilter: undefined, filter: true },
     ];
 
-    const { tasks, count, handleCreateTask, modalCreateTask, setModalCreateTask } = useTask();
+    const { tasks, count, modalCreateTask, setModalCreateTask, handleCreateTask, handleGetTasks } = useTask();
+
 
     return (
         <Fragment>
@@ -48,7 +48,11 @@ const TaskingPage = () => {
                         action={() => setModalCreateTask(true)} />
                 </div>
                 <div>
-                    <TableComponent headers={headers} data={tasks} totalElements={count} />
+                    <TableComponent
+                        headers={headers}
+                        data={tasks}
+                        totalElements={count}
+                        handleGetElements={handleGetTasks} />
                 </div>
             </LayoutPage>
         </Fragment>

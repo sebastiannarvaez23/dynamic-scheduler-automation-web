@@ -10,6 +10,7 @@ interface TableComponentProps {
     headers: Header[],
     data: any[],
     totalElements: number,
+    handleGetElements: (page: number, filter?: string) => void;
 }
 
 const TableComponent = (props: TableComponentProps) => {
@@ -74,6 +75,7 @@ const TableComponent = (props: TableComponentProps) => {
                 currentPage={currentPage}
                 totalRecords={props.totalElements}
                 onPageChange={(newPage) => setCurrentPage(newPage)}
+                handleGetElements={props.handleGetElements}
             />
         </Fragment>
     );

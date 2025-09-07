@@ -1,23 +1,35 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 
 interface PaginationProps {
     currentPage: number;
     totalRecords: number;
     onPageChange: (page: number) => void;
+    handleGetElements: (page: number, filter?: string) => void;
 }
 
 const PaginationComponent = ({
     currentPage,
     totalRecords,
     onPageChange,
+    handleGetElements
 }: PaginationProps) => {
 
     const totalPages: number = Math.ceil(totalRecords / 10);
 
-    const goToFirst = () => onPageChange(1);
-    const goToPrevious = () => onPageChange(Math.max(currentPage - 1, 1));
-    const goToNext = () => onPageChange(Math.min(currentPage + 1, totalPages));
-    const goToLast = () => onPageChange(totalPages);
+    const goToFirst = () => onPageChange(0);
+    const goToPrevious = () => onPageChange(Math.max(currentPage - 1, 0));
+    const goToNext = () => onPageChange(Math.min(currentPage + 1, totalPages - 1));
+    const goToLast = () => onPageChange(totalPages - 1);
+
+    const changePage = (newPage: number) => {
+        if (newPage >= 0 && newPage <= totalPages) {
+            handleGetElements(newPage);
+        }
+    }
+
+    useEffect(() => {
+        changePage(currentPage);
+    }, [currentPage]);
 
     return (
         <Fragment>
@@ -26,7 +38,7 @@ const PaginationComponent = ({
 
                 <button
                     onClick={goToFirst}
-                    disabled={currentPage === 1}
+                    disabled={currentPage === 0}
                     className="bg-white cursor-pointer px-2 py-1 rounded hover:shadow-xl disabled:text-gray-300"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
@@ -35,7 +47,7 @@ const PaginationComponent = ({
                 </button>
                 <button
                     onClick={goToPrevious}
-                    disabled={currentPage === 1}
+                    disabled={currentPage === 0}
                     className="bg-white cursor-pointer px-2 py-1 rounded hover:shadow-xl disabled:text-gray-300"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
@@ -49,7 +61,7 @@ const PaginationComponent = ({
 
                 <button
                     onClick={goToNext}
-                    disabled={currentPage === totalPages}
+                    disabled={currentPage === totalPages - 1}
                     className="bg-white cursor-pointer px-2 py-1 rounded hover:shadow-xl disabled:text-gray-300"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
@@ -58,7 +70,7 @@ const PaginationComponent = ({
                 </button>
                 <button
                     onClick={goToLast}
-                    disabled={currentPage === totalPages}
+                    disabled={currentPage === totalPages - 1}
                     className="bg-white cursor-pointer px-2 py-1 rounded hover:shadow-xl disabled:text-gray-300"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
