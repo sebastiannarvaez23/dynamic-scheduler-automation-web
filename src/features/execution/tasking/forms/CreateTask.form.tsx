@@ -10,13 +10,13 @@ import FormToggleComponent from "../../../../core/components/FormToggle.componen
 import useTask from "../hooks/useTask.hook";
 
 import type { Task } from "../interfaces/task.interface";
-import { timeToCron } from "../../../../utils/cron/timepicker-convert.util";
+import { timeToCron, cronToTime } from '../../../../utils/cron/timepicker-convert.util';
 
-interface FormCreateTaskProps {
+interface FormCreateUpdateTaskProps {
     action: (data: Task) => void;
 }
 
-const FormCreateTask = (props: FormCreateTaskProps) => {
+const FormCreateUpdateTask = (props: FormCreateUpdateTaskProps) => {
 
     const { taskSelected } = useTask();
 
@@ -36,7 +36,7 @@ const FormCreateTask = (props: FormCreateTaskProps) => {
             id: taskSelected.id,
             name: taskSelected.name,
             description: taskSelected.description,
-            cronExpression: taskSelected.cronExpression,
+            cronExpression: taskSelected.cronExpression && cronToTime(taskSelected.cronExpression),
             active: taskSelected.active
         },
         validationSchema,
@@ -80,24 +80,22 @@ const FormCreateTask = (props: FormCreateTaskProps) => {
                             value={formik.values.cronExpression}
                             error={formik.touched.cronExpression!! && Boolean(formik.errors.cronExpression)}
                             helperText={formik.touched.cronExpression && formik.errors.cronExpression}
-                            onChange={formik.handleChange}
-                        />
+                            onChange={formik.handleChange} />
                     </div>
                     <div className="col-span-2 sm:col-span-1 flex items-center mx-4">
                         <FormToggleComponent
                             label="Activo"
                             name="active"
                             value={formik.values.active}
-                            onChange={formik.handleChange}
-                        />
+                            onChange={formik.handleChange} />
                     </div>
                 </div>
                 <div className="mt-7">
-                    <ButtonComponent label="+ Añadir nueva tarea" type="submit" action={() => { }} />
+                    <ButtonComponent label="+ Añadir nueva tarea" type="submit" />
                 </div>
             </form>
         </Fragment>
     );
 }
 
-export default FormCreateTask;
+export default FormCreateUpdateTask;

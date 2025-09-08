@@ -59,6 +59,7 @@ export const updateTask = (task: Task, page: number = 1) => {
             const taskUpdated = await fetchUpdateTask(task);
             await dispatch(setTaskSelected({ task: taskUpdated }));
             await dispatch(getTasks(page));
+            return taskUpdated;
             // await dispatch(setAlert({ type: 'success', message: 'Personaje actualizado exitosamente!' }));
         } catch (error: any) {
             //dispatch(setAlert({ type: 'error', message: 'Ocurrió un error actualizando el personaje.' }));

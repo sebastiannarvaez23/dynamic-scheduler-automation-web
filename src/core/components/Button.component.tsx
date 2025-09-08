@@ -3,7 +3,7 @@ import { Fragment } from "react/jsx-runtime";
 interface ButtonComponentProps {
     label: string;
     type: "submit" | "reset" | "button" | undefined;
-    action: () => void;
+    action?: () => void;
 }
 
 const ButtonComponent = (props: ButtonComponentProps) => {

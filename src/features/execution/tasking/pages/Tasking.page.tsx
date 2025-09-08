@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import { LayoutPage } from "../../../../core/components/LayoutPage.component";
 import { TitlePage } from "../../../../core/components/TitlePage.component";
 import ButtonComponent from "../../../../core/components/Button.component";
-import FormCreateTask from "../forms/CreateTask.form";
+import FormCreateUpdateTask from "../forms/CreateTask.form";
 import ModalComponent from '../../../../core/components/Modal.component';
 import TableComponent from "../../../../core/components/Table.component";
 import useTask from "../hooks/useTask.hook";
@@ -26,15 +26,31 @@ const TaskingPage = () => {
     const {
         tasks,
         count,
-        modalCreateTask,
         filters,
+        page,
+        modalCreate,
+        modalUpdate,
+        isLoadingTaskSelected,
+        setModalCreate,
+        setModalUpdate,
         handleSetFilters,
-        setModalCreateTask,
         handleCreateTask,
         handleGetTasks,
-        handleCleanFilters
+        handleGetTask,
+        handleUpdateTask,
+        handleCleanFilters,
+        handleSetEmptyTaskSelected,
     } = useTask();
 
+    const handlePreUpdate = (id: string) => {
+        setModalUpdate(true);
+        handleGetTask(id);
+    }
+
+    const handlePreCreate = () => {
+        setModalCreate(true);
+        handleSetEmptyTaskSelected();
+    }
 
     return (
         <Fragment>
@@ -42,10 +58,17 @@ const TaskingPage = () => {
                 <TitlePage title="Tareas programadas" />
                 <ModalComponent
                     title={"Crear tarea"}
-                    open={modalCreateTask}
-                    setOpen={setModalCreateTask}>
-                    <FormCreateTask
+                    open={modalCreate}
+                    setOpen={setModalCreate}>
+                    <FormCreateUpdateTask
                         action={(task: Task) => handleCreateTask(task, 0)} />
+                </ModalComponent>
+                <ModalComponent
+                    title={"Editar tarea"}
+                    open={!isLoadingTaskSelected && modalUpdate}
+                    setOpen={setModalUpdate}>
+                    <FormCreateUpdateTask
+                        action={(task: Task) => handleUpdateTask(task, page)} />
                 </ModalComponent>
                 <div className="w-full my-5 px-10 text-right">
                     <ButtonComponent
@@ -55,7 +78,7 @@ const TaskingPage = () => {
                     <ButtonComponent
                         label="Crear tarea"
                         type="button"
-                        action={() => setModalCreateTask(true)} />
+                        action={handlePreCreate} />
                 </div>
                 <div>
                     <TableComponent
@@ -63,6 +86,7 @@ const TaskingPage = () => {
                         data={tasks}
                         totalElements={count}
                         filters={filters}
+                        handlePreUpdate={handlePreUpdate}
                         handleGetElements={handleGetTasks}
                         handleSetFilters={handleSetFilters} />
                 </div>

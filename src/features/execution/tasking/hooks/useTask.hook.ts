@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { clearFilters, createTask, deleteTask, getTask, getTasks, setFilters, updateTask } from '../../../../store/slices/task';
+import { clearFilters, createTask, deleteTask, getTask, getTasks, setEmptyTaskSelected, setFilters, updateTask } from '../../../../store/slices/task';
 import type { AppDispatch, RootState } from '../../../../store/store';
 import type { Task } from '../interfaces/task.interface';
 
@@ -20,8 +20,8 @@ function useTask() {
         isLoadingTasks
     } = useSelector((state: RootState) => state.task);
 
-    const [modalEditTask, setModalEditTask] = useState(false);
-    const [modalCreateTask, setModalCreateTask] = useState(false);
+    const [modalCreate, setModalCreate] = useState(false);
+    const [modalUpdate, setModalUpdate] = useState(false);
 
     const taskEmpty: Task = {
         id: undefined,
@@ -48,36 +48,28 @@ function useTask() {
         dispatch(getTask(id));
     }
 
-    const handleOpenModalEditTask = () => {
-        setModalEditTask(true);
-    };
-
-    const handleCloseModalEditTask = () => {
-        setModalEditTask(false);
-    };
-
-    const handleOpenModalCreateTask = () => {
-        setModalCreateTask(true);
-    };
-
-    const handleCloseModalCreateTask = () => {
-        setModalCreateTask(false);
-    };
-
     const handleCreateTask = (task: Task, page: number) => {
         dispatch(createTask(task, page))
             .then((taskCreated) => {
-                if (taskCreated) setModalCreateTask(false);
+                if (taskCreated) setModalCreate(false);
             })
             .catch((err) => console.error("Error creando la tarea", err));
     };
 
     const handleUpdateTask = (task: Task, page: number) => {
-        dispatch(updateTask(task, page));
+        dispatch(updateTask(task, page))
+            .then((taskUpdated) => {
+                if (taskUpdated) setModalUpdate(false);
+            })
+            .catch((err) => console.error("Error creando la tarea", err));
     }
 
     const handleDeleteTask = () => {
         dispatch(deleteTask());
+    }
+
+    const handleSetEmptyTaskSelected = () => {
+        dispatch(setEmptyTaskSelected());
     }
 
     useEffect(() => {
@@ -85,29 +77,26 @@ function useTask() {
     }, [])
 
     return {
-        taskEmpty,
-        tasks,
-        taskSelected,
         count,
         filters,
         isLoadingTasks,
         isLoadingTaskSelected,
-        modalCreateTask,
-        modalEditTask,
+        modalCreate,
+        modalUpdate,
         page,
-        handleSetFilters,
+        taskEmpty,
+        tasks,
+        taskSelected,
         handleCleanFilters,
-        handleUpdateTask,
         handleCreateTask,
         handleDeleteTask,
-        handleCloseModalCreateTask,
-        handleCloseModalEditTask,
-        handleGetTasks,
         handleGetTask,
-        handleOpenModalCreateTask,
-        handleOpenModalEditTask,
-        setModalCreateTask,
-        setModalEditTask,
+        handleGetTasks,
+        handleSetFilters,
+        handleUpdateTask,
+        setModalCreate,
+        setModalUpdate,
+        handleSetEmptyTaskSelected,
     }
 }
 

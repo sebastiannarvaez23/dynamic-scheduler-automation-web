@@ -30,9 +30,7 @@ export const fetchCreateTask = async (task: Task): Promise<Task> => {
 
 export const fetchUpdateTask = async (task: Task): Promise<Task> => {
     const { id, ...rest } = task;
-    const response = await api.put(`/task/${id}`, rest, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-    })
+    const response = await api.put(`/task/${id}`, rest)
         .catch(customCatch)
     return response.data;
 };
