@@ -13,6 +13,7 @@ import type { Task } from "../interfaces/task.interface";
 import { timeToCron, cronToTime } from '../../../../utils/cron/timepicker-convert.util';
 
 interface FormCreateUpdateTaskProps {
+    label: string;
     action: (data: Task) => void;
 }
 
@@ -91,7 +92,7 @@ const FormCreateUpdateTask = (props: FormCreateUpdateTaskProps) => {
                     </div>
                 </div>
                 <div className="mt-7">
-                    <ButtonComponent label="+ Añadir nueva tarea" type="submit" />
+                    <ButtonComponent label={props.label} type="submit" />
                 </div>
             </form>
         </Fragment>

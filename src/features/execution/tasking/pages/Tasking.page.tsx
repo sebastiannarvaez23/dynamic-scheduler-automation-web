@@ -61,6 +61,7 @@ const TaskingPage = () => {
                     open={modalCreate}
                     setOpen={setModalCreate}>
                     <FormCreateUpdateTask
+                        label="+ Añadir nueva tarea"
                         action={(task: Task) => handleCreateTask(task, 0)} />
                 </ModalComponent>
                 <ModalComponent
@@ -68,6 +69,7 @@ const TaskingPage = () => {
                     open={!isLoadingTaskSelected && modalUpdate}
                     setOpen={setModalUpdate}>
                     <FormCreateUpdateTask
+                        label="Editar tarea"
                         action={(task: Task) => handleUpdateTask(task, page)} />
                 </ModalComponent>
                 <div className="w-full my-5 px-10 text-right">
