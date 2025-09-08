@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { createTask, deleteTask, getTask, getTasks, updateTask } from '../../../../store/slices/task';
+import { clearFilters, createTask, deleteTask, getTask, getTasks, setFilters, updateTask } from '../../../../store/slices/task';
 import type { AppDispatch, RootState } from '../../../../store/store';
 import type { Task } from '../interfaces/task.interface';
 
@@ -14,7 +14,7 @@ function useTask() {
         tasks,
         taskSelected,
         count,
-        filter,
+        filters,
         page,
         isLoadingTaskSelected,
         isLoadingTasks
@@ -31,8 +31,17 @@ function useTask() {
         active: false,
     }
 
-    const handleGetTasks = (page: number, name?: string) => {
-        dispatch(getTasks(page, name));
+    const handleCleanFilters = () => {
+        dispatch(clearFilters());
+        handleGetTasks(0, {})
+    }
+
+    const handleSetFilters = (newFilters: Record<string, any>) => {
+        dispatch(setFilters(newFilters));
+    };
+
+    const handleGetTasks = (page: number, filters?: Record<string, any>) => {
+        dispatch(getTasks(page, filters));
     }
 
     const handleGetTask = (id: string) => {
@@ -80,12 +89,14 @@ function useTask() {
         tasks,
         taskSelected,
         count,
-        filter,
+        filters,
         isLoadingTasks,
         isLoadingTaskSelected,
         modalCreateTask,
         modalEditTask,
         page,
+        handleSetFilters,
+        handleCleanFilters,
         handleUpdateTask,
         handleCreateTask,
         handleDeleteTask,

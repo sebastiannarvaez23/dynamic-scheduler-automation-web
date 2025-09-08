@@ -9,7 +9,7 @@ interface TaskState {
     error: string | null;
     taskSelected: Task;
     page: number;
-    filter: string | undefined;
+    filters: Record<string, any>;
     count: number;
     tasks: Task[];
 }
@@ -26,7 +26,7 @@ const initialState: TaskState = {
         active: false,
     },
     page: 1,
-    filter: undefined,
+    filters: {},
     count: 0,
     tasks: [],
 }
@@ -48,8 +48,11 @@ export const taskSlice = createSlice({
         setPage: (state, action) => {
             state.page = action.payload.page;
         },
-        setFilter: (state, action) => {
-            state.filter = action.payload.filter;
+        clearFilters: (state) => {
+            state.filters = {};
+        },
+        setFilters: (state, action) => {
+            state.filters = action.payload;
         },
         setCount: (state, action) => {
             state.count = action.payload.count;
@@ -72,5 +75,6 @@ export const {
     startLoadingTasksSelected,
     setEmptyTaskSelected,
     setPage,
-    setFilter
+    setFilters,
+    clearFilters
 } = taskSlice.actions;

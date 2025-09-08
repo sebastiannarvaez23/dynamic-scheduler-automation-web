@@ -1,22 +1,21 @@
 import { fetchCreateTask, fetchDeleteTask, fetchGetTask, fetchGetTasks, fetchUpdateTask } from '../../../features/execution/tasking/services/task.service';
-import { setPage, setFilter, setTasks, startLoadingTasks, setTaskSelected, startLoadingTasksSelected, setEmptyTaskSelected, setCount } from "./task.slice";
+import { setPage, setTasks, startLoadingTasks, setTaskSelected, startLoadingTasksSelected, setEmptyTaskSelected, setCount } from "./task.slice";
 import { uribuild } from "../../../utils/params/uribuild";
 
 import type { AppDispatch, RootState } from "../../store";
 import type { Task } from "../../../features/execution/tasking/interfaces/task.interface";
 
 
-export const getTasks = (page: number = 0, name?: string) => {
+export const getTasks = (page: number = 0, filters?: Record<string, any>) => {
     return async (dispatch: AppDispatch, getState: () => RootState) => {
         try {
             const { isLoadingTasks } = getState().task;
             if (!isLoadingTasks) {
                 dispatch(startLoadingTasks());
-                const tasks = await fetchGetTasks(uribuild({ page, name }));
+                const tasks = await fetchGetTasks(uribuild({ page, ...filters }));
                 await dispatch(setTasks({ tasks: tasks.content }));
                 await dispatch(setCount({ count: tasks.totalElements }));
                 await dispatch(setPage({ page }));
-                await dispatch(setFilter({ filter: name }));
                 //if (!name && tasks.rows.length === 0) dispatch(setAlert({ type: 'warning', message: 'No hay personajes almacenados' }));
                 //else if (name && tasks.rows.length === 0) dispatch(setAlert({ type: 'warning', message: 'No existen personajes para los filtros especificados' }));
             }

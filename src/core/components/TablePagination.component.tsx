@@ -4,7 +4,7 @@ interface PaginationProps {
     currentPage: number;
     totalRecords: number;
     onPageChange: (page: number) => void;
-    handleGetElements: (page: number, filter?: string) => void;
+    handleGetElements: (page: number, filter?: Record<string, any>) => void;
 }
 
 const PaginationComponent = ({

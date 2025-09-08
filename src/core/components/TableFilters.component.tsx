@@ -1,26 +1,36 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect } from "react";
 
+import { timeToCron } from "../../utils/cron/timepicker-convert.util";
 import DatepickerComponent from "./Datepicker.component";
 import DbounceComponent from "./Dbounce.component";
 import SelectComponent from "./Select.componet";
 import TimepickerComponent from "./Timepicker.component";
 import ToggleComponent from "./Toggle.component";
+
 import type { Header } from "../interfaces/header.interface";
+
 
 interface TableFiltersComponentProps {
     headers: Header[];
+    filters: Record<string, any>;
     onFiltersChange?: (filters: Record<string, any>) => void;
+    handleGetElements: (page: number, filters: Record<string, any>) => void;
+    handleSetFilters: (filters: Record<string, any>) => void;
 }
 
-const TableFiltersComponent = ({ headers, onFiltersChange }: TableFiltersComponentProps) => {
-    const [filters, setFilters] = useState<Record<string, any>>({});
+const TableFiltersComponent = ({ headers, filters, onFiltersChange, handleGetElements, handleSetFilters }: TableFiltersComponentProps) => {
 
     const handleChange = (key: string, value: any) => {
-        setFilters(prev => ({ ...prev, [key]: value }));
+        handleSetFilters({ ...filters, [key]: value });
     };
 
     useEffect(() => {
         onFiltersChange?.(filters);
+        const { cronExpression, ...rest } = filters;
+        handleGetElements(0, {
+            cronExpression: cronExpression ? timeToCron(cronExpression) : undefined,
+            ...rest,
+        });
     }, [filters]);
 
     return (
@@ -33,7 +43,7 @@ const TableFiltersComponent = ({ headers, onFiltersChange }: TableFiltersCompone
                 {headers.map((header) => {
                     if (!header.label) return null;
 
-                    const key = header.label;
+                    const key = header.field;
 
                     switch (header.typeFilter) {
                         case "input":
@@ -50,7 +60,11 @@ const TableFiltersComponent = ({ headers, onFiltersChange }: TableFiltersCompone
                         case "toggle":
                             return (
                                 <div key={key} className="flex items-center gap-2">
-                                    <ToggleComponent label={header.label} />
+                                    <ToggleComponent
+                                        label={header.label}
+                                        value={filters[key] || ""}
+                                        onChange={(val) => handleChange(key, val)}
+                                    />
                                 </div>
                             );
 
@@ -64,7 +78,11 @@ const TableFiltersComponent = ({ headers, onFiltersChange }: TableFiltersCompone
                         case "time":
                             return (
                                 <div key={key} className="flex flex-col">
-                                    <TimepickerComponent label={header.label} />
+                                    <TimepickerComponent
+                                        label={header.label}
+                                        search={filters[key] || ""}
+                                        onSearch={(val) => handleChange(key, val)}
+                                    />
                                 </div>
                             );
 

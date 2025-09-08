@@ -1,4 +1,4 @@
-import { Fragment } from "react/jsx-runtime";
+import { Fragment } from "react";
 
 import { LayoutPage } from "../../../../core/components/LayoutPage.component";
 import { TitlePage } from "../../../../core/components/TitlePage.component";
@@ -19,11 +19,21 @@ const TaskingPage = () => {
         { label: 'Descripción', field: "description", typeFilter: 'input', filter: true },
         { label: 'Hora ejecución', field: "cronExpression", typeFilter: 'time', filter: true },
         { label: 'Activo', field: "active", typeFilter: 'toggle', filter: true },
-        { label: undefined, field: undefined, typeFilter: undefined, filter: true },
-        { label: undefined, field: undefined, typeFilter: undefined, filter: true },
+        { label: undefined, field: "", typeFilter: undefined, filter: true },
+        { label: undefined, field: "", typeFilter: undefined, filter: true },
     ];
 
-    const { tasks, count, modalCreateTask, setModalCreateTask, handleCreateTask, handleGetTasks } = useTask();
+    const {
+        tasks,
+        count,
+        modalCreateTask,
+        filters,
+        handleSetFilters,
+        setModalCreateTask,
+        handleCreateTask,
+        handleGetTasks,
+        handleCleanFilters
+    } = useTask();
 
 
     return (
@@ -41,7 +51,7 @@ const TaskingPage = () => {
                     <ButtonComponent
                         label="Limpiar filtros"
                         type="button"
-                        action={() => alert("Presionaste en limpiar filtros!")} />
+                        action={handleCleanFilters} />
                     <ButtonComponent
                         label="Crear tarea"
                         type="button"
@@ -52,7 +62,9 @@ const TaskingPage = () => {
                         headers={headers}
                         data={tasks}
                         totalElements={count}
-                        handleGetElements={handleGetTasks} />
+                        filters={filters}
+                        handleGetElements={handleGetTasks}
+                        handleSetFilters={handleSetFilters} />
                 </div>
             </LayoutPage>
         </Fragment>
