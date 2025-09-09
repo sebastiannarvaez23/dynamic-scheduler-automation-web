@@ -1,8 +1,9 @@
 import { fetchCreateCompany, fetchDeleteCompany, fetchGetCompany, fetchGetCompanies, fetchUpdateCompany } from '../services/task.service';
+import { setAlert } from '../../../../core/store/alert/slice';
 import { setPage, setCompanies, startLoadingCompanies, setCompanySelected, startLoadingCompaniesSelected, setEmptyCompanySelected, setCount } from "./slice";
 import { uribuild } from "../../../../utils/params/uribuild";
 
-import type { AppDispatch, RootState } from "../../store";
+import type { AppDispatch, RootState } from '../../../../core/store/store';
 import type { Company } from '../interfaces/company.interface';
 
 
@@ -16,11 +17,11 @@ export const getCompanies = (page: number = 0, filters?: Record<string, any>) =>
                 await dispatch(setCompanies({ companies: companies.content }));
                 await dispatch(setCount({ count: companies.totalElements }));
                 await dispatch(setPage({ page }));
-                //if (!name && companies.rows.length === 0) dispatch(setAlert({ type: 'warning', message: 'No hay personajes almacenados' }));
-                //else if (name && companies.rows.length === 0) dispatch(setAlert({ type: 'warning', message: 'No existen personajes para los filtros especificados' }));
+                if (!filters && companies.content.length === 0) dispatch(setAlert({ type: 'warning', message: 'No hay empresas almacenadas' }));
+                else if (!!filters && companies.content.length === 0) dispatch(setAlert({ type: 'warning', message: 'No existen empresas para los filtros especificados' }));
             }
         } catch (error: any) {
-            //dispatch(setAlert({ type: 'error', message: 'Ocurrió un error oteniendo la lista de Personajes' }));
+            dispatch(setAlert({ type: 'error', message: 'Ocurrió un error oteniendo la lista de empresas' }));
         }
     };
 };
@@ -35,7 +36,7 @@ export const getCompany = (id: string) => {
                 await dispatch(setCompanySelected({ company }));
             }
         } catch (error: any) {
-            //dispatch(setAlert({ type: 'error', message: 'Ocurrió un error oteniendo el personaje.' }));
+            dispatch(setAlert({ type: 'error', message: 'Ocurrió un error oteniendo la empresa.' }));
         }
     };
 };
@@ -45,10 +46,10 @@ export const createCompany = (company: Company, page: number = 1) => {
         try {
             const companyCreated: Company = await fetchCreateCompany(company);
             await dispatch(getCompanies(page));
+            await dispatch(setAlert({ type: 'success', message: `Empresa "${companyCreated.name}" creada exitosamente!` }));
             return companyCreated;
-            // await dispatch(setAlert({ type: 'success', message: `Personaje "${companyCreated.name}" creado exitosamente!` }));
         } catch (error: any) {
-            //dispatch(setAlert({ type: 'error', message: 'Ocurrió un error creando el personaje.' }));
+            dispatch(setAlert({ type: 'error', message: 'Ocurrió un error creando la empresa.' }));
         }
     };
 };
@@ -59,10 +60,10 @@ export const updateCompany = (company: Company, page: number = 1) => {
             const companyUpdated = await fetchUpdateCompany(company);
             await dispatch(setCompanySelected({ company: companyUpdated }));
             await dispatch(getCompanies(page));
+            await dispatch(setAlert({ type: 'success', message: 'Empresa actualizada exitosamente!' }));
             return companyUpdated;
-            // await dispatch(setAlert({ type: 'success', message: 'Personaje actualizado exitosamente!' }));
         } catch (error: any) {
-            //dispatch(setAlert({ type: 'error', message: 'Ocurrió un error actualizando el personaje.' }));
+            dispatch(setAlert({ type: 'error', message: 'Ocurrió un error actualizando la empresa.' }));
         }
     };
 };
@@ -73,9 +74,9 @@ export const deleteCompany = (id: string) => {
             await fetchDeleteCompany(id);
             await dispatch(setEmptyCompanySelected());
             await dispatch(getCompanies());
-            // await dispatch(setAlert({ type: 'success', message: 'Personaje eliminado exitosamente!' }));
+            await dispatch(setAlert({ type: 'success', message: 'Empresa eliminada exitosamente!' }));
         } catch (error: any) {
-            //dispatch(setAlert({ type: 'error', message: 'Ocurrió un error eliminando el personaje.' }));
+            dispatch(setAlert({ type: 'error', message: 'Ocurrió un error eliminando la empresa.' }));
         }
     };
 };

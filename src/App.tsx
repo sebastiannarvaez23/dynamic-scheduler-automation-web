@@ -1,6 +1,8 @@
 import { Fragment } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
+import AlertListener from './core/listener/AlertListener';
+
 import CompanyPage from './features/execution/company/pages/Company.page';
 import HistoryPage from './features/execution/history/pages/History.page';
 import TaskingPage from './features/execution/task/pages/Tasking.page';
@@ -12,6 +14,7 @@ function App() {
 
   return (
     <Fragment>
+      <AlertListener />
       <Routes>
         <Route path="/" element={<Navigate to="/task" replace />} />
         <Route path="/task" element={<TaskingPage />} />

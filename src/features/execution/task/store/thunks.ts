@@ -1,4 +1,5 @@
 import { fetchCreateTask, fetchDeleteTask, fetchGetTask, fetchGetTasks, fetchUpdateTask } from '../services/task.service';
+import { setAlert } from '../../../../core/store/alert/slice';
 import { setPage, setTasks, startLoadingTasks, setTaskSelected, startLoadingTasksSelected, setEmptyTaskSelected, setCount } from "./slice";
 import { uribuild } from "../../../../utils/params/uribuild";
 
@@ -16,11 +17,11 @@ export const getTasks = (page: number = 0, filters?: Record<string, any>) => {
                 await dispatch(setTasks({ tasks: tasks.content }));
                 await dispatch(setCount({ count: tasks.totalElements }));
                 await dispatch(setPage({ page }));
-                //if (!name && tasks.rows.length === 0) dispatch(setAlert({ type: 'warning', message: 'No hay personajes almacenados' }));
-                //else if (name && tasks.rows.length === 0) dispatch(setAlert({ type: 'warning', message: 'No existen personajes para los filtros especificados' }));
+                if (!filters && tasks.content.length === 0) dispatch(setAlert({ type: 'warning', message: 'No hay tareas programadas' }));
+                else if (!!filters && tasks.content.length === 0) dispatch(setAlert({ type: 'warning', message: 'No existen tareas para los filtros especificados' }));
             }
         } catch (error: any) {
-            //dispatch(setAlert({ type: 'error', message: 'Ocurrió un error oteniendo la lista de Personajes' }));
+            dispatch(setAlert({ type: 'error', message: 'Ocurrió un error oteniendo la lista de tareas' }));
         }
     };
 };
@@ -35,7 +36,7 @@ export const getTask = (id: string) => {
                 await dispatch(setTaskSelected({ task }));
             }
         } catch (error: any) {
-            //dispatch(setAlert({ type: 'error', message: 'Ocurrió un error oteniendo el personaje.' }));
+            dispatch(setAlert({ type: 'error', message: 'Ocurrió un error oteniendo la tearea.' }));
         }
     };
 };
@@ -45,10 +46,10 @@ export const createTask = (task: Task, page: number = 1) => {
         try {
             const taskCreated: Task = await fetchCreateTask(task);
             await dispatch(getTasks(page));
+            dispatch(setAlert({ type: "success", message: `Tarea creada exitosamente!` }));
             return taskCreated;
-            // await dispatch(setAlert({ type: 'success', message: `Personaje "${taskCreated.name}" creado exitosamente!` }));
         } catch (error: any) {
-            //dispatch(setAlert({ type: 'error', message: 'Ocurrió un error creando el personaje.' }));
+            dispatch(setAlert({ type: "error", message: "Ocurrió un error creando la tarea." }));
         }
     };
 };
@@ -59,10 +60,10 @@ export const updateTask = (task: Task, page: number = 1) => {
             const taskUpdated = await fetchUpdateTask(task);
             await dispatch(setTaskSelected({ task: taskUpdated }));
             await dispatch(getTasks(page));
+            dispatch(setAlert({ type: "success", message: `Tarea actualizada exitosamente!` }));
             return taskUpdated;
-            // await dispatch(setAlert({ type: 'success', message: 'Personaje actualizado exitosamente!' }));
         } catch (error: any) {
-            //dispatch(setAlert({ type: 'error', message: 'Ocurrió un error actualizando el personaje.' }));
+            dispatch(setAlert({ type: "error", message: "Ocurrió un error actualizando la tarea." }));
         }
     };
 };
@@ -73,9 +74,9 @@ export const deleteTask = (id: string) => {
             await fetchDeleteTask(id);
             await dispatch(setEmptyTaskSelected());
             await dispatch(getTasks());
-            // await dispatch(setAlert({ type: 'success', message: 'Personaje eliminado exitosamente!' }));
+            dispatch(setAlert({ type: "success", message: `Tarea eliminada exitosamente!` }));
         } catch (error: any) {
-            //dispatch(setAlert({ type: 'error', message: 'Ocurrió un error eliminando el personaje.' }));
+            dispatch(setAlert({ type: "error", message: "Ocurrió un error eliminando la tarea." }));
         }
     };
 };
