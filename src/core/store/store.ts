@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import { taskSlice } from './slices/task';
-import { companySlice } from './slices/company';
+import { taskSlice } from '../../features/execution/task/store';
+import { companySlice } from '../../features/execution/company/store';
 
 
 export const store = configureStore({

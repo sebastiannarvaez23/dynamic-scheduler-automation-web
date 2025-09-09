@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { clearFilters, createCompany, deleteCompany, getCompany, getCompanies, setEmptyCompanySelected, setFilters, updateCompany } from '../../../../store/slices/company';
+import { clearFilters, createCompany, deleteCompany, getCompany, getCompanies, setEmptyCompanySelected, setFilters, updateCompany } from '../store';
 
-import type { AppDispatch, RootState } from '../../../../store/store';
+import type { AppDispatch, RootState } from '../../../../core/store/store';
 import type { Company } from '../interfaces/company.interface';
 
 

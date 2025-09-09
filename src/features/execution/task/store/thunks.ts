@@ -1,9 +1,9 @@
-import { fetchCreateTask, fetchDeleteTask, fetchGetTask, fetchGetTasks, fetchUpdateTask } from '../../../features/execution/tasking/services/task.service';
-import { setPage, setTasks, startLoadingTasks, setTaskSelected, startLoadingTasksSelected, setEmptyTaskSelected, setCount } from "./task.slice";
-import { uribuild } from "../../../utils/params/uribuild";
+import { fetchCreateTask, fetchDeleteTask, fetchGetTask, fetchGetTasks, fetchUpdateTask } from '../services/task.service';
+import { setPage, setTasks, startLoadingTasks, setTaskSelected, startLoadingTasksSelected, setEmptyTaskSelected, setCount } from "./slice";
+import { uribuild } from "../../../../utils/params/uribuild";
 
-import type { AppDispatch, RootState } from "../../store";
-import type { Task } from "../../../features/execution/tasking/interfaces/task.interface";
+import type { AppDispatch, RootState } from '../../../../core/store/store';
+import type { Task } from "../interfaces/task.interface";
 
 
 export const getTasks = (page: number = 0, filters?: Record<string, any>) => {

@@ -1,9 +1,9 @@
-import { fetchCreateCompany, fetchDeleteCompany, fetchGetCompany, fetchGetCompanies, fetchUpdateCompany } from '../../../features/execution/company/services/task.service';
-import { setPage, setCompanies, startLoadingCompanies, setCompanySelected, startLoadingCompaniesSelected, setEmptyCompanySelected, setCount } from "./company.slice";
-import { uribuild } from "../../../utils/params/uribuild";
+import { fetchCreateCompany, fetchDeleteCompany, fetchGetCompany, fetchGetCompanies, fetchUpdateCompany } from '../services/task.service';
+import { setPage, setCompanies, startLoadingCompanies, setCompanySelected, startLoadingCompaniesSelected, setEmptyCompanySelected, setCount } from "./slice";
+import { uribuild } from "../../../../utils/params/uribuild";
 
 import type { AppDispatch, RootState } from "../../store";
-import type { Company } from '../../../features/execution/company/interfaces/company.interface';
+import type { Company } from '../interfaces/company.interface';
 
 
 export const getCompanies = (page: number = 0, filters?: Record<string, any>) => {

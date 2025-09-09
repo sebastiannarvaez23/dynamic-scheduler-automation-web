@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import type { Task } from '../../../features/execution/tasking/interfaces/task.interface';
+import type { Task } from '../interfaces/task.interface';
 
 
 interface TaskState {

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { clearFilters, createTask, deleteTask, getTask, getTasks, setEmptyTaskSelected, setFilters, updateTask } from '../../../../store/slices/task';
-import type { AppDispatch, RootState } from '../../../../store/store';
+import { clearFilters, createTask, deleteTask, getTask, getTasks, setEmptyTaskSelected, setFilters, updateTask } from '../store';
+import type { AppDispatch, RootState } from '../../../../core/store/store';
 import type { Task } from '../interfaces/task.interface';
 
 

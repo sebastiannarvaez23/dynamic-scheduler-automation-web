@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import type { Company } from '../../../features/execution/company/interfaces/company.interface';
+import type { Company } from '../interfaces/company.interface';
 
 
 interface CompanyState {

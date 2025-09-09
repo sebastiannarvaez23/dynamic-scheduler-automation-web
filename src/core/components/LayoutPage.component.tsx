@@ -12,7 +12,7 @@ export const LayoutPage = (props: LayoutPageProps) => {
                 <div className="p-6 w-60 border-r border-gray-200 shadow-sm">
                     <h6 className="mb-4 font-bold">Opciones</h6>
                     <ul>
-                        <a href="/tasking">
+                        <a href="/task">
                             <li className="flex mb-1 group/item items-center p-2 rounded cursor-pointer hover:bg-gray-200 transition-colors duration-200">
                                 <div className="bg-white shadow-sm p-2 mr-3 rounded-lg">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
