@@ -40,6 +40,7 @@ const TaskingPage = () => {
         handleUpdateTask,
         handleCleanFilters,
         handleSetEmptyTaskSelected,
+        handleDeleteTask,
     } = useTask();
 
     const handlePreUpdate = (id: string) => {
@@ -90,7 +91,8 @@ const TaskingPage = () => {
                         filters={filters}
                         handlePreUpdate={handlePreUpdate}
                         handleGetElements={handleGetTasks}
-                        handleSetFilters={handleSetFilters} />
+                        handleSetFilters={handleSetFilters}
+                        handleDelete={handleDeleteTask} />
                 </div>
             </LayoutPage>
         </Fragment>

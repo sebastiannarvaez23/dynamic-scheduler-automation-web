@@ -64,8 +64,8 @@ function useTask() {
             .catch((err) => console.error("Error creando la tarea", err));
     }
 
-    const handleDeleteTask = () => {
-        dispatch(deleteTask());
+    const handleDeleteTask = (id: string) => {
+        dispatch(deleteTask(id));
     }
 
     const handleSetEmptyTaskSelected = () => {

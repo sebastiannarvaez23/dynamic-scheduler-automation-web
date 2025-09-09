@@ -67,11 +67,10 @@ export const updateTask = (task: Task, page: number = 1) => {
     };
 };
 
-export const deleteTask = () => {
-    return async (dispatch: AppDispatch, getState: () => RootState) => {
+export const deleteTask = (id: string) => {
+    return async (dispatch: AppDispatch) => {
         try {
-            const { taskSelected } = getState().task;
-            if (taskSelected.id) await fetchDeleteTask(taskSelected.id);
+            await fetchDeleteTask(id);
             await dispatch(setEmptyTaskSelected());
             await dispatch(getTasks());
             // await dispatch(setAlert({ type: 'success', message: 'Personaje eliminado exitosamente!' }));
