@@ -32,7 +32,7 @@ export const LayoutPage = (props: LayoutPageProps) => {
                                 <span className="self-center">Historico</span>
                             </li>
                         </a>
-                        <a href="/history">
+                        <a href="/company">
                             <li className="flex mb-1 items-center p-2 rounded cursor-pointer hover:bg-gray-200 transition-colors duration-200">
                                 <div className="bg-white shadow-sm p-2 mr-3 rounded-lg">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">

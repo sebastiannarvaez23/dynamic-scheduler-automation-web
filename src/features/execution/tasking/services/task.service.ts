@@ -1,4 +1,4 @@
-import api from "./api.service";
+import api from "../../../../core/service/api.service";
 
 import type { Task } from "../interfaces/task.interface";
 
