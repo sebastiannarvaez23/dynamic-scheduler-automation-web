@@ -9,6 +9,8 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+@import "tailwindcss";
+
 body {
   margin: 0;
   min-width: 320px;

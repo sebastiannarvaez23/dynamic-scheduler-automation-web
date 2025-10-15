@@ -15,6 +15,7 @@ import type { Task } from "../interfaces/task.interface";
 const TaskingPage = () => {
 
     const headers: Header[] = [
+        { label: 'Código', field: "code", typeFilter: 'input', filter: true },
         { label: 'Nombre', field: "name", typeFilter: 'input', filter: true },
         { label: 'Descripción', field: "description", typeFilter: 'input', filter: true },
         { label: 'Hora ejecución', field: "cronExpression", typeFilter: 'time', filter: true },

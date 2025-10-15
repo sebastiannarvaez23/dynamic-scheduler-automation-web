@@ -20,6 +20,7 @@ const initialState: TaskState = {
     error: null,
     taskSelected: {
         id: undefined,
+        code: "",
         name: "",
         description: "",
         cronExpression: "",
