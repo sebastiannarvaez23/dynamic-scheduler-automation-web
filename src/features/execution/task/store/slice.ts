@@ -25,6 +25,7 @@ const initialState: TaskState = {
         description: "",
         cronExpression: "",
         active: false,
+        companies: []
     },
     page: 1,
     filters: {},

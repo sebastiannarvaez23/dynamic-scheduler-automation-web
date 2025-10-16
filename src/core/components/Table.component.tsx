@@ -31,6 +31,10 @@ const TableComponent = (props: TableComponentProps) => {
 
     const emptyRows = Math.max(10 - props.data.length, 0);
 
+    const getNestedValue = (obj: any, path: string): any => {
+        return path.split('.').reduce((acc, part) => acc && acc[part], obj);
+    };
+
     return (
         <Fragment>
             <DialogComponent
@@ -39,7 +43,7 @@ const TableComponent = (props: TableComponentProps) => {
                 setOpen={setDialog}
                 confirm={() => {
                     setDialog(false);
-                    props.handleDelete(idRow);
+                    props.handleDelete && props.handleDelete(idRow);
                 }}
             />
             <TableFiltersComponent
@@ -74,7 +78,7 @@ const TableComponent = (props: TableComponentProps) => {
                                         if (colIndex === props.headers.length - 2) {
                                             return (
                                                 <td className="px-6 py-4 text-right">
-                                                    <a className="font-medium text-blue-600 hover:underline" onClick={() => props.handlePreUpdate(row.id)}>
+                                                    <a className="font-medium text-blue-600 hover:underline" onClick={() => props.handlePreUpdate && props.handlePreUpdate(row.id)}>
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
                                                             <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                                         </svg>
@@ -96,7 +100,7 @@ const TableComponent = (props: TableComponentProps) => {
                                         return <td key={colIndex} className="px-6 py-4"></td>;
                                     }
 
-                                    let value = row[header.field];
+                                    let value = getNestedValue(row, header.field);
 
                                     if (header.field === "cronExpression" && value) {
                                         value = cronToTime(value);

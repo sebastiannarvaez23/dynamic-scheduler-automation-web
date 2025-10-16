@@ -5,18 +5,37 @@ import { TitlePage } from "../../../../core/components/TitlePage.component";
 import ButtonComponent from "../../../../core/components/Button.component";
 import TableComponent from "../../../../core/components/Table.component";
 import type { Header } from "../../../../core/interfaces/header.interface";
+import useHistory from "../hooks/useHistory.hook";
 
 const HistoryPage = () => {
 
     const headers: Header[] = [
-        { label: 'Nombre tarea', field: "name", typeFilter: 'input', filter: true },
+        { label: 'Nombre tarea', field: "task.name", typeFilter: 'input', filter: true },
         { label: 'Fecha ejecución', field: "executionDate", typeFilter: 'date', filter: true },
         { label: 'Tiempo de ejecución', field: "executionTime", typeFilter: undefined, filter: false },
         { label: 'Estado', field: "status", typeFilter: 'select', filter: false },
         { label: 'Hora ejecución', field: "executionHour", typeFilter: undefined, filter: false },
-        { label: '', field: "", typeFilter: undefined, filter: false },
-        { label: '', field: "", typeFilter: undefined, filter: false },
-    ]
+    ];
+
+    const {
+        histories,
+        count,
+        filters,
+        page,
+        modalCreate,
+        modalUpdate,
+        isLoadingHistorySelected,
+        setModalCreate,
+        setModalUpdate,
+        handleSetFilters,
+        handleCreateHistory,
+        handleGetHistories,
+        handleGetHistory,
+        handleUpdateHistory,
+        handleCleanFilters,
+        handleSetEmptyHistorySelected,
+        handleDeleteHistory,
+    } = useHistory();
 
     return (
         <Fragment>
@@ -31,9 +50,8 @@ const HistoryPage = () => {
                         data={histories}
                         totalElements={count}
                         filters={filters}
-                        handleSetFilters={handleSetFilters}
-                        handleGetElements={handleGetTasks}
-                    />
+                        handleGetElements={handleGetHistories}
+                        handleSetFilters={handleSetFilters} />
                 </div>
             </LayoutPage>
         </Fragment>

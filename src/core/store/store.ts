@@ -1,8 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import { taskSlice } from '../../features/execution/task/store';
-import { companySlice } from '../../features/execution/company/store';
 import { alertSlice } from './alert/slice';
+import { companySlice } from '../../features/execution/company/store';
+import { historySlice } from '../../features/execution/history/store';
+import { taskSlice } from '../../features/execution/task/store';
 
 
 export const store = configureStore({
@@ -10,6 +11,7 @@ export const store = configureStore({
         alert: alertSlice.reducer,
         company: companySlice.reducer,
         task: taskSlice.reducer,
+        history: historySlice.reducer,
     },
 });
 

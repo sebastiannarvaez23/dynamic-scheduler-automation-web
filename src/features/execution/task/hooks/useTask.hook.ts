@@ -25,9 +25,11 @@ function useTask() {
 
     const taskEmpty: Task = {
         id: undefined,
+        code: "",
         name: "",
         description: "",
         cronExpression: "",
+        companies: [],
         active: false,
     }
 
