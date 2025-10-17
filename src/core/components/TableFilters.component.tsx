@@ -70,7 +70,7 @@ const TableFiltersComponent = ({ headers, filters, onFiltersChange, handleGetEle
 
                         case "select":
                             return (
-                                <div key={key} className="flex flex-col">
+                                <div key={key} className="flex flex-col w-full sm:w-[220px]">
                                     <SelectComponent label={header.label} />
                                 </div>
                             );

@@ -3,4 +3,5 @@ export interface Header {
     field: string;
     filter: boolean;
     typeFilter: 'input' | 'toggle' | 'select' | 'time' | 'date' | undefined;
+    format: 'text' | 'hour' | 'date' | 'duration' | undefined;
 }

@@ -22,7 +22,7 @@ const DatepickerComponent = ({ label }: DatepickerComponentProps) => {
                     selected={startDate}
                     onChange={(date) => setStartDate(date)}
                     placeholderText="Selecciona una fecha"
-                    className="pl-10 pr-4 py-2.5 text-sm text-gray-800 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
+                    className=" pl-10 pr-4 py-2.5 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     dateFormat="dd/MM/yyyy"
                 />
             </div>
