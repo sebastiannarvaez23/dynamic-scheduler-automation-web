@@ -3,6 +3,7 @@ import { Fragment } from "react/jsx-runtime";
 import { LayoutPage } from '../../../../core/components/LayoutPage.component';
 import { TitlePage } from "../../../../core/components/TitlePage.component";
 import ButtonComponent from "../../../../core/components/Button.component";
+import HistoryListener from "../listener/history.listener";
 import TableComponent from "../../../../core/components/Table.component";
 import type { Header } from "../../../../core/interfaces/header.interface";
 import useHistory from "../hooks/useHistory.hook";
@@ -21,6 +22,7 @@ const HistoryPage = () => {
         histories,
         count,
         filters,
+        isSocketMode,
         page,
         modalCreate,
         modalUpdate,
@@ -35,10 +37,15 @@ const HistoryPage = () => {
         handleCleanFilters,
         handleSetEmptyHistorySelected,
         handleDeleteHistory,
+        handleSocketData,
+        handleInitialSocketData
     } = useHistory();
 
     return (
         <Fragment>
+            {isSocketMode && <HistoryListener
+                onChange={handleSocketData}
+                onInitialData={handleInitialSocketData} />}
             <LayoutPage>
                 <TitlePage title="Historial de ejecuciones" />
                 <div className="w-full my-5 px-10 text-right">

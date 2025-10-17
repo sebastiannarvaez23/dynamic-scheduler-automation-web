@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import type { AppDispatch, RootState } from "../../../../core/store/store";
@@ -22,6 +22,8 @@ function useHistory() {
 
     const [modalCreate, setModalCreate] = useState(false);
     const [modalUpdate, setModalUpdate] = useState(false);
+    const [socketHistories, setSocketHistories] = useState<History[]>([]);
+    const [isSocketMode, setIsSocketMode] = useState(true);
 
     const historyEmpty: History = {
         id: undefined,
@@ -50,8 +52,23 @@ function useHistory() {
     };
 
     const handleGetHistories = (page: number, filters?: Record<string, any>) => {
+        if (page === 0) {
+            setIsSocketMode(true);
+            return;
+        }
+        setIsSocketMode(false);
         dispatch(getHistories(page, filters));
     }
+
+    const handleSocketData = useCallback((data: History) => {
+        console.log("📦 Procesando cambio individual del socket:", data);
+        setSocketHistories(prev => [data, ...prev]);
+    }, []);
+
+    const handleInitialSocketData = useCallback((data: History[]) => {
+        console.log("📦 Cargando datos iniciales:", data.length, "documentos");
+        setSocketHistories(data);
+    }, []);
 
     const handleGetHistory = (id: string) => {
         dispatch(getHistory(id));
@@ -82,11 +99,15 @@ function useHistory() {
     }
 
     useEffect(() => {
-        if (histories.length === 0 && !isLoadingHistories) dispatch(getHistories());
-    }, [])
+        if (histories.length === 0 && !isLoadingHistories && !isSocketMode) {
+            dispatch(getHistories());
+        }
+    }, [isSocketMode]);
+
+    const displayHistories = isSocketMode ? socketHistories : histories;
 
     return {
-        count,
+        count: isSocketMode ? socketHistories.length : count,
         filters,
         isLoadingHistories,
         isLoadingHistorySelected,
@@ -94,8 +115,9 @@ function useHistory() {
         modalUpdate,
         page,
         historyEmpty,
-        histories,
+        histories: displayHistories,
         historySelected,
+        isSocketMode,
         handleCleanFilters,
         handleCreateHistory,
         handleDeleteHistory,
@@ -106,6 +128,8 @@ function useHistory() {
         setModalCreate,
         setModalUpdate,
         handleSetEmptyHistorySelected,
+        handleSocketData,
+        handleInitialSocketData,
     }
 }
 
