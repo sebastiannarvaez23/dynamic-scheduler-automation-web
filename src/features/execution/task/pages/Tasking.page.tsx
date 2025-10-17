@@ -15,13 +15,13 @@ import type { Task } from "../interfaces/task.interface";
 const TaskingPage = () => {
 
     const headers: Header[] = [
-        { label: 'Código', field: "code", typeFilter: 'input', filter: true },
-        { label: 'Nombre', field: "name", typeFilter: 'input', filter: true },
-        { label: 'Descripción', field: "description", typeFilter: 'input', filter: true },
-        { label: 'Hora ejecución', field: "cronExpression", typeFilter: 'time', filter: true },
-        { label: 'Activo', field: "active", typeFilter: 'toggle', filter: true },
-        { label: undefined, field: "", typeFilter: undefined, filter: true },
-        { label: undefined, field: "", typeFilter: undefined, filter: true },
+        { label: 'Código', field: "code", typeFilter: 'input', filter: true, format: 'text' },
+        { label: 'Nombre', field: "name", typeFilter: 'input', filter: true, format: 'text' },
+        { label: 'Descripción', field: "description", typeFilter: 'input', filter: true, format: 'text' },
+        { label: 'Hora ejecución', field: "cronExpression", typeFilter: 'time', filter: true, format: 'hour' },
+        { label: 'Activo', field: "active", typeFilter: 'toggle', filter: true, format: 'text' },
+        { label: undefined, field: "", typeFilter: undefined, filter: false, format: undefined },
+        { label: undefined, field: "", typeFilter: undefined, filter: false, format: undefined },
     ];
 
     const {

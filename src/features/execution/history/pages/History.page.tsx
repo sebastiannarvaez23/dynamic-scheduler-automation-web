@@ -10,12 +10,13 @@ import useHistory from "../hooks/useHistory.hook";
 
 const HistoryPage = () => {
 
+    const load = { loading: "EJECUTANDO", complete: "FINALIZADO", fail: "FALLIDO" };
     const headers: Header[] = [
-        { label: 'Nombre tarea', field: "task.name", typeFilter: 'input', filter: true, format: 'text' },
-        { label: 'Fecha ejecución', field: "executionDate", typeFilter: 'date', filter: true, format: 'date' },
-        { label: 'Hora ejecución', field: "executionHour", typeFilter: undefined, filter: false, format: 'hour' },
-        { label: 'Tiempo de ejecución', field: "executionTime", typeFilter: undefined, filter: false, format: 'duration' },
-        { label: 'Estado', field: "status", typeFilter: 'select', filter: false, format: undefined },
+        { label: 'Nombre tarea', field: "task.name", typeFilter: 'input', filter: true, format: 'text', load: load },
+        { label: 'Fecha ejecución', field: "executionDate", typeFilter: 'date', filter: true, format: 'date', load: load },
+        { label: 'Hora ejecución', field: "executionHour", typeFilter: undefined, filter: false, format: 'hour', load: load },
+        { label: 'Tiempo de ejecución', field: "executionTime", typeFilter: undefined, filter: false, format: 'duration', load: load },
+        { label: 'Estado', field: "status", typeFilter: 'select', filter: false, format: undefined, load: load },
     ];
 
     const {

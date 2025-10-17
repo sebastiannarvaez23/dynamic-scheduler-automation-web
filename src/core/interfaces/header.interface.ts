@@ -4,4 +4,9 @@ export interface Header {
     filter: boolean;
     typeFilter: 'input' | 'toggle' | 'select' | 'time' | 'date' | undefined;
     format: 'text' | 'hour' | 'date' | 'duration' | undefined;
+    load?: {
+        loading: string;
+        complete: string;
+        fail: string;
+    }
 }
