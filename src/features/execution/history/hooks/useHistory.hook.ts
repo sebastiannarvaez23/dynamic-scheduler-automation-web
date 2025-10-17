@@ -54,15 +54,20 @@ function useHistory() {
     const handleGetHistories = (page: number, filters?: Record<string, any>) => {
         if (page === 0) {
             setIsSocketMode(true);
+            dispatch(getHistories(page, filters));
             return;
         }
+
         setIsSocketMode(false);
         dispatch(getHistories(page, filters));
-    }
+    };
 
     const handleSocketData = useCallback((data: History) => {
         console.log("📦 Procesando cambio individual del socket:", data);
-        setSocketHistories(prev => [data, ...prev]);
+        setSocketHistories(prev => {
+            const updated = [data, ...prev];
+            return updated.slice(0, 10);
+        });
     }, []);
 
     const handleInitialSocketData = useCallback((data: History[]) => {
@@ -107,7 +112,7 @@ function useHistory() {
     const displayHistories = isSocketMode ? socketHistories : histories;
 
     return {
-        count: isSocketMode ? socketHistories.length : count,
+        count,
         filters,
         isLoadingHistories,
         isLoadingHistorySelected,
