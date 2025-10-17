@@ -40,12 +40,12 @@ function useHistory() {
         executionHour: "",
         executionTime: "",
         status: "",
-    }
+    };
 
     const handleCleanFilters = () => {
         dispatch(clearFilters());
-        handleGetHistories(0, {})
-    }
+        handleGetHistories(0, {});
+    };
 
     const handleSetFilters = (newFilters: Record<string, any>) => {
         dispatch(setFilters(newFilters));
@@ -57,27 +57,58 @@ function useHistory() {
             dispatch(getHistories(page, filters));
             return;
         }
-
         setIsSocketMode(false);
         dispatch(getHistories(page, filters));
     };
 
-    const handleSocketData = useCallback((data: History) => {
-        console.log("📦 Procesando cambio individual del socket:", data);
-        setSocketHistories(prev => {
-            const updated = [data, ...prev];
+    const handleSocketData = useCallback((message: { type: string; data: History }) => {
+        console.log("📩 Procesando evento del socket:", message);
+        const { type, data } = message;
+
+        setSocketHistories((prev) => {
+            let updated = [...prev];
+
+            switch (type) {
+                case "INSERT": {
+                    const exists = updated.some((item) => item.id === data.id);
+                    if (!exists) {
+                        updated = [data, ...updated];
+                    } else {
+                        updated = updated.map((item) => (item.id === data.id ? data : item));
+                    }
+                    break;
+                }
+                case "UPDATE": {
+                    updated = updated.map((item) => (item.id === data.id ? data : item));
+                    break;
+                }
+                case "DELETE": {
+                    updated = updated.filter((item) => item.id !== data.id);
+                    break;
+                }
+                default:
+                    console.warn("⚠️ Tipo de evento desconocido:", type);
+            }
+
+            // Limitamos a los últimos 10 historiales
             return updated.slice(0, 10);
         });
     }, []);
 
     const handleInitialSocketData = useCallback((data: History[]) => {
         console.log("📦 Cargando datos iniciales:", data.length, "documentos");
-        setSocketHistories(data);
+        // Nos aseguramos de ordenarlos del más reciente al más antiguo
+        const sorted = data.sort((a, b) => {
+            const dateA = new Date(a.executionDate).getTime();
+            const dateB = new Date(b.executionDate).getTime();
+            return dateB - dateA;
+        });
+        setSocketHistories(sorted.slice(0, 10));
     }, []);
 
     const handleGetHistory = (id: string) => {
         dispatch(getHistory(id));
-    }
+    };
 
     const handleCreateHistory = (history: History, page: number) => {
         dispatch(createHistory(history, page))
@@ -92,16 +123,16 @@ function useHistory() {
             .then((historyUpdated) => {
                 if (historyUpdated) setModalUpdate(false);
             })
-            .catch((err) => console.error("Error creando la tarea", err));
-    }
+            .catch((err) => console.error("Error actualizando la tarea", err));
+    };
 
     const handleDeleteHistory = (id: string) => {
         dispatch(deleteHistory(id));
-    }
+    };
 
     const handleSetEmptyHistorySelected = () => {
         dispatch(setEmptyHistorySelected());
-    }
+    };
 
     useEffect(() => {
         if (histories.length === 0 && !isLoadingHistories && !isSocketMode) {
@@ -135,7 +166,7 @@ function useHistory() {
         handleSetEmptyHistorySelected,
         handleSocketData,
         handleInitialSocketData,
-    }
+    };
 }
 
 export default useHistory;
