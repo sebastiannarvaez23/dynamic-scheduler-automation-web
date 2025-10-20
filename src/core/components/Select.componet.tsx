@@ -18,16 +18,19 @@ const SelectComponent = (props: SelectComponentProps) => {
                 <div className="relative">
                     <select
                         id="status"
+                        defaultValue=""
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
-                                   focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-8
-                                   appearance-none">
-                        <option selected>
+                            focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-8
+                            appearance-none">
+                        <option value="" disabled>
                             {`Seleccione ${props.label.length > 15
                                 ? props.label.toLowerCase().slice(0, 15) + "..."
                                 : props.label.toLowerCase()
                                 }`}
                         </option>
-                        {props.options && props.options.map(e => (<option value={e.key}>{e.value}</option>))}
+                        {props.options && props.options.map(e => (
+                            <option key={e.key} value={e.key}>{e.value}</option>
+                        ))}
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-2 flex items-center pr-2 text-gray-500">
                         <svg

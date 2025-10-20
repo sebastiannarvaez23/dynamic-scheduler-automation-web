@@ -256,7 +256,7 @@ const TableComponent = (props: TableComponentProps) => {
                                                         strokeWidth={3}
                                                         stroke="red"
                                                         className="size-6">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
                                                     </svg>
                                                 ) : (
                                                     formatValue(value, header.format)

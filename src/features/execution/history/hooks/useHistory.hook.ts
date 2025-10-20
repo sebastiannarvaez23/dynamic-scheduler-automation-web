@@ -83,7 +83,7 @@ function useHistory() {
 
                         dispatch(setAlert({
                             type: "info",
-                            message: `🌀 Se inició la ejecución de "${data.task.name}" para la empresa "${data.company?.name ?? 'Desconocida'}"`
+                            message: `Se inició la ejecución de "${data.task.name}" para la empresa "${data.company?.name ?? 'Desconocida'}"`
                         }));
                     } else {
                         updated = updated.map((item) => (item.id === data.id ? data : item));

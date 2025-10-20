@@ -29,10 +29,16 @@ const initialState: HistoryState = {
             companies: [],
             active: false,
         },
-        executionDate: new Date(),
+        executionDate: new Date().toISOString(),
         executionHour: "",
         executionTime: "",
         status: "",
+        company: {
+            nit: "",
+            name: "",
+            description: "",
+            active: false
+        }
     },
     page: 1,
     filters: {},
