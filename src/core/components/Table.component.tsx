@@ -266,9 +266,6 @@ const TableComponent = (props: TableComponentProps) => {
                                             )}
                                         </td>
                                     );
-
-
-
                                 })}
                             </tr>
                         ))}

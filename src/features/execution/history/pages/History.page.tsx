@@ -10,7 +10,7 @@ import useHistory from "../hooks/useHistory.hook";
 
 const HistoryPage = () => {
 
-    const load = { loading: "EJECUTANDO", complete: "FINALIZADO", fail: "FALLIDO" };
+    const load = { loading: "RUNNING", complete: "COMPLETED", fail: "FAILED" };
     const headers: Header[] = [
         { label: 'Nombre tarea', field: "task.name", typeFilter: 'input', filter: true, format: 'text', load: load },
         { label: 'Fecha ejecución', field: "executionDate", typeFilter: 'date', filter: true, format: 'date', load: load },
