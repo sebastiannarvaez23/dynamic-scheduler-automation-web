@@ -1,7 +1,13 @@
 import { Fragment } from "react/jsx-runtime";
 
+interface Option {
+    key: string;
+    value: string;
+}
+
 interface SelectComponentProps {
     label: string;
+    options?: Option[];
 }
 
 const SelectComponent = (props: SelectComponentProps) => {
@@ -21,9 +27,7 @@ const SelectComponent = (props: SelectComponentProps) => {
                                 : props.label.toLowerCase()
                                 }`}
                         </option>
-                        <option value="US">Ejecutándose</option>
-                        <option value="CA">Finalizado</option>
-                        <option value="FR">Fallido</option>
+                        {props.options && props.options.map(e => (<option value={e.key}>{e.value}</option>))}
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-2 flex items-center pr-2 text-gray-500">
                         <svg
