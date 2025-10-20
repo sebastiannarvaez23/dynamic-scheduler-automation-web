@@ -1,3 +1,4 @@
+import type { Company } from "../../company/interfaces/company.interface";
 import type { Task } from "../../task/interfaces/task.interface";
 
 export interface History {
@@ -7,4 +8,5 @@ export interface History {
     executionHour: string;
     executionTime: string;
     status: string;
+    company: Company;
 }

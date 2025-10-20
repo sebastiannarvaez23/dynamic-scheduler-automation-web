@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../../../core/store/store";
 import type { History } from "../interfaces/history.interface";
 import { clearFilters, createHistory, deleteHistory, getHistories, getHistory, setEmptyHistorySelected, setFilters, updateHistory } from "../store";
+import { setAlert } from "../../../../core/store/alert/slice";
 
 
 function useHistory() {
@@ -40,6 +41,12 @@ function useHistory() {
         executionHour: "",
         executionTime: "",
         status: "",
+        company: {
+            nit: "",
+            name: "",
+            description: "",
+            active: false
+        }
     };
 
     const handleCleanFilters = () => {
@@ -73,6 +80,11 @@ function useHistory() {
                     const exists = updated.some((item) => item.id === data.id);
                     if (!exists) {
                         updated = [data, ...updated];
+
+                        dispatch(setAlert({
+                            type: "info",
+                            message: `🌀 Se inició la ejecución de "${data.task.name}" para la empresa "${data.company?.name ?? 'Desconocida'}"`
+                        }));
                     } else {
                         updated = updated.map((item) => (item.id === data.id ? data : item));
                     }
@@ -89,15 +101,12 @@ function useHistory() {
                 default:
                     console.warn("⚠️ Tipo de evento desconocido:", type);
             }
-
-            // Limitamos a los últimos 10 historiales
             return updated.slice(0, 10);
         });
-    }, []);
+    }, [dispatch]);
 
     const handleInitialSocketData = useCallback((data: History[]) => {
         console.log("📦 Cargando datos iniciales:", data.length, "documentos");
-        // Nos aseguramos de ordenarlos del más reciente al más antiguo
         const sorted = data.sort((a, b) => {
             const dateA = new Date(a.executionDate).getTime();
             const dateB = new Date(b.executionDate).getTime();

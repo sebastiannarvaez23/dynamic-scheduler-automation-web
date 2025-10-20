@@ -1,4 +1,7 @@
 import { Fragment } from "react";
+import { SocketListener } from "../listener/SocketListener.listener";
+
+
 
 interface LayoutPageProps {
     children: React.ReactNode;
@@ -7,6 +10,7 @@ interface LayoutPageProps {
 export const LayoutPage = (props: LayoutPageProps) => {
     return (
         <Fragment>
+            <SocketListener />
             <div className="bg-white flex p-6 shadow-sm">Scheduler Automation</div>
             <div className="flex flex-row min-h-screen">
                 <div className="p-6 w-60 border-r border-gray-200 shadow-sm">
