@@ -1,9 +1,9 @@
-import { useEffect, useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import type { AppDispatch, RootState } from "../../../../core/store/store";
 import type { History } from "../interfaces/history.interface";
-import { clearFilters, createHistory, deleteHistory, getHistories, getHistory, setEmptyHistorySelected, setFilters, updateHistory } from "../store";
+import { clearFilters, getHistories, getHistory, setEmptyHistorySelected, setFilters } from "../store";
 import { setAlert } from "../../../../core/store/alert/slice";
 
 
@@ -21,10 +21,11 @@ function useHistory() {
         isLoadingHistories
     } = useSelector((state: RootState) => state.history);
 
+    const listenerRef = useRef<{ requestPage: (page: number, size?: number) => void }>(null);
+
     const [modalCreate, setModalCreate] = useState(false);
     const [modalUpdate, setModalUpdate] = useState(false);
     const [socketHistories, setSocketHistories] = useState<History[]>([]);
-    const [isSocketMode, setIsSocketMode] = useState(true);
 
     const historyEmpty: History = {
         id: undefined,
@@ -59,13 +60,8 @@ function useHistory() {
     };
 
     const handleGetHistories = (page: number, filters?: Record<string, any>) => {
-        if (page === 0) {
-            setIsSocketMode(true);
-            dispatch(getHistories(page, filters));
-            return;
-        }
-        setIsSocketMode(false);
-        dispatch(getHistories(page, filters));
+        listenerRef.current?.requestPage(page, 10);
+        dispatch(getHistories({ content: socketHistories, totalElements: 68 }, page, filters));
     };
 
     const handleSocketData = useCallback((message: { type: string; data: History }) => {
@@ -119,37 +115,9 @@ function useHistory() {
         dispatch(getHistory(id));
     };
 
-    const handleCreateHistory = (history: History, page: number) => {
-        dispatch(createHistory(history, page))
-            .then((historyCreated) => {
-                if (historyCreated) setModalCreate(false);
-            })
-            .catch((err) => console.error("Error creando la tarea", err));
-    };
-
-    const handleUpdateHistory = (history: History, page: number) => {
-        dispatch(updateHistory(history, page))
-            .then((historyUpdated) => {
-                if (historyUpdated) setModalUpdate(false);
-            })
-            .catch((err) => console.error("Error actualizando la tarea", err));
-    };
-
-    const handleDeleteHistory = (id: string) => {
-        dispatch(deleteHistory(id));
-    };
-
     const handleSetEmptyHistorySelected = () => {
         dispatch(setEmptyHistorySelected());
     };
-
-    useEffect(() => {
-        if (histories.length === 0 && !isLoadingHistories && !isSocketMode) {
-            dispatch(getHistories());
-        }
-    }, [isSocketMode]);
-
-    const displayHistories = isSocketMode ? socketHistories : histories;
 
     return {
         count,
@@ -160,16 +128,13 @@ function useHistory() {
         modalUpdate,
         page,
         historyEmpty,
-        histories: displayHistories,
+        histories: socketHistories,
         historySelected,
-        isSocketMode,
+        listenerRef,
         handleCleanFilters,
-        handleCreateHistory,
-        handleDeleteHistory,
         handleGetHistory,
         handleGetHistories,
         handleSetFilters,
-        handleUpdateHistory,
         setModalCreate,
         setModalUpdate,
         handleSetEmptyHistorySelected,

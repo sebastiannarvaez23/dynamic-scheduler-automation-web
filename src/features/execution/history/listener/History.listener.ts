@@ -1,16 +1,15 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useImperativeHandle, forwardRef } from "react";
+
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 
-interface HistoryListenerListenerProps {
+
+interface HistoryListenerProps {
     onChange: (data: any) => void;
     onInitialData: (data: any[]) => void;
 }
 
-export default function HistoryListenerListener({
-    onChange,
-    onInitialData,
-}: HistoryListenerListenerProps) {
+const HistoryListener = forwardRef(({ onChange, onInitialData }: HistoryListenerProps, ref) => {
     const clientRef = useRef<Client | null>(null);
     const isInitializedRef = useRef(false);
 
@@ -31,7 +30,9 @@ export default function HistoryListenerListener({
                 stompClient.subscribe("/topic/history/initial", (message) => {
                     if (message.body) {
                         try {
-                            const data = JSON.parse(message.body);
+                            const response = JSON.parse(message.body);
+                            const data = response.content;
+                            const totalElements = response.totalElements;
                             onInitialData(data);
                         } catch (error) {
                             console.error("❌ Error parseando datos iniciales:", error);
@@ -42,7 +43,9 @@ export default function HistoryListenerListener({
                 stompClient.subscribe("/topic/history/change", (message) => {
                     if (message.body) {
                         try {
-                            const data = JSON.parse(message.body);
+                            const response = JSON.parse(message.body);
+                            const data = response.content;
+                            const totalElements = response.totalElements;
                             onChange(data);
                         } catch (error) {
                             console.error("❌ Error parseando cambio:", error);
@@ -51,8 +54,8 @@ export default function HistoryListenerListener({
                 });
 
                 stompClient.publish({
-                    destination: "/app/history/initial",
-                    body: "",
+                    destination: "/app/history/get",
+                    body: JSON.stringify({ page: 0, size: 10 }),
                 });
             },
             onDisconnect: () => console.log("❌ Desconectado de WebSocket (/history)"),
@@ -72,5 +75,20 @@ export default function HistoryListenerListener({
         };
     }, [onChange, onInitialData]);
 
+    useImperativeHandle(ref, () => ({
+        requestPage: (page: number, size = 10) => {
+            if (clientRef.current && clientRef.current.connected) {
+                clientRef.current.publish({
+                    destination: "/app/history/get",
+                    body: JSON.stringify({ page, size }),
+                });
+            } else {
+                console.warn("⚠️ WebSocket no conectado aún");
+            }
+        },
+    }));
+
     return null;
-}
+});
+
+export default HistoryListener;
