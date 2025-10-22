@@ -1,10 +1,10 @@
 import { useState, useCallback, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import { clearFilters, setHistories, setEmptyHistorySelected, setFilters, addOrUpdateHistory, deleteHistory, setCount, setPage, startLoadingHistories } from "../store";
+import { setAlert } from "../../../../core/store/alert/slice";
 import type { AppDispatch, RootState } from "../../../../core/store/store";
 import type { History } from "../interfaces/history.interface";
-import { clearFilters, getHistories, getHistory, setEmptyHistorySelected, setFilters } from "../store";
-import { setAlert } from "../../../../core/store/alert/slice";
 
 
 function useHistory() {
@@ -25,7 +25,6 @@ function useHistory() {
 
     const [modalCreate, setModalCreate] = useState(false);
     const [modalUpdate, setModalUpdate] = useState(false);
-    const [socketHistories, setSocketHistories] = useState<History[]>([]);
 
     const historyEmpty: History = {
         id: undefined,
@@ -50,74 +49,66 @@ function useHistory() {
         }
     };
 
-    const handleCleanFilters = () => {
+    const handleCleanFilters = useCallback(() => {
         dispatch(clearFilters());
-        handleGetHistories(0, {});
-    };
-
-    const handleSetFilters = (newFilters: Record<string, any>) => {
-        dispatch(setFilters(newFilters));
-    };
-
-    const handleGetHistories = (page: number, filters?: Record<string, any>) => {
-        listenerRef.current?.requestPage(page, 10);
-        dispatch(getHistories({ content: socketHistories, totalElements: 68 }, page, filters));
-    };
-
-    const handleSocketData = useCallback((message: { type: string; data: History }) => {
-        console.log("📩 Procesando evento del socket:", message);
-        const { type, data } = message;
-
-        setSocketHistories((prev) => {
-            let updated = [...prev];
-
-            switch (type) {
-                case "INSERT": {
-                    const exists = updated.some((item) => item.id === data.id);
-                    if (!exists) {
-                        updated = [data, ...updated];
-
-                        dispatch(setAlert({
-                            type: "info",
-                            message: `Se inició la ejecución de "${data.task.name}" para la empresa "${data.company?.name ?? 'Desconocida'}"`
-                        }));
-                    } else {
-                        updated = updated.map((item) => (item.id === data.id ? data : item));
-                    }
-                    break;
-                }
-                case "UPDATE": {
-                    updated = updated.map((item) => (item.id === data.id ? data : item));
-                    break;
-                }
-                case "DELETE": {
-                    updated = updated.filter((item) => item.id !== data.id);
-                    break;
-                }
-                default:
-                    console.warn("⚠️ Tipo de evento desconocido:", type);
-            }
-            return updated.slice(0, 10);
-        });
+        listenerRef.current?.requestPage(0, 10);
     }, [dispatch]);
 
-    const handleInitialSocketData = useCallback((data: History[]) => {
-        console.log("📦 Cargando datos iniciales:", data.length, "documentos");
-        const sorted = data.sort((a, b) => {
-            const dateA = new Date(a.executionDate).getTime();
-            const dateB = new Date(b.executionDate).getTime();
-            return dateB - dateA;
-        });
-        setSocketHistories(sorted.slice(0, 10));
-    }, []);
+    const handleSetFilters = useCallback((newFilters: Record<string, any>) => {
+        dispatch(setFilters(newFilters));
+    }, [dispatch]);
 
-    const handleGetHistory = (id: string) => {
-        dispatch(getHistory(id));
-    };
+    const handleGetHistories = useCallback((page: number, filters?: Record<string, any>) => {
+        console.log(`🔍 Solicitando página ${page}`);
+        dispatch(startLoadingHistories());
+        listenerRef.current?.requestPage(page, 10);
+    }, [dispatch]);
 
-    const handleSetEmptyHistorySelected = () => {
+    const handleSocketChange = useCallback((message: { type: string; content: History; totalElements: number }) => {
+        console.log("📩 Procesando cambio individual:", message);
+        const { type, content: historyData, totalElements } = message;
+
+        if (typeof totalElements === "number") {
+            dispatch(setCount({ count: totalElements }));
+        }
+
+        switch (type) {
+            case "INSERT":
+                dispatch(addOrUpdateHistory(historyData));
+                dispatch(setAlert({
+                    type: "info",
+                    message: `Se inició la ejecución de "${historyData.task.name}" para la empresa "${historyData.company?.name ?? 'Desconocida'}"`
+                }));
+                break;
+
+            case "UPDATE":
+                dispatch(addOrUpdateHistory(historyData));
+                break;
+
+            case "DELETE":
+                if (historyData.id) dispatch(deleteHistory(historyData.id));
+                break;
+
+            default:
+                console.warn("⚠️ Tipo de evento desconocido:", type);
+        }
+    }, [dispatch]);
+
+    const handleInitialSocketData = useCallback(
+        (data: History[], totalElements: number, page?: number) => {
+            console.log(`📦 Procesando datos paginados: ${data.length} registros, página ${page}`);
+            dispatch(setHistories({ histories: data }));
+            dispatch(setCount({ count: totalElements }));
+            if (page !== undefined) {
+                dispatch(setPage({ page }));
+            }
+        },
+        [dispatch]
+    );
+
+    const handleSetEmptyHistorySelected = useCallback(() => {
         dispatch(setEmptyHistorySelected());
-    };
+    }, [dispatch]);
 
     return {
         count,
@@ -128,17 +119,16 @@ function useHistory() {
         modalUpdate,
         page,
         historyEmpty,
-        histories: socketHistories,
+        histories,
         historySelected,
         listenerRef,
         handleCleanFilters,
-        handleGetHistory,
         handleGetHistories,
         handleSetFilters,
         setModalCreate,
         setModalUpdate,
         handleSetEmptyHistorySelected,
-        handleSocketData,
+        handleSocketChange,
         handleInitialSocketData,
     };
 }

@@ -1,7 +1,5 @@
 import { setAlert } from '../../../../core/store/alert/slice';
-import { setPage, setHistories, startLoadingHistories, setHistorySelected, startLoadingHistoriesSelected, setEmptyHistorySelected, setCount } from "./slice";
-import { uribuild } from "../../../../utils/params/uribuild";
-
+import { setPage, setHistories, startLoadingHistories, startLoadingHistoriesSelected, setCount } from "./slice";
 import type { AppDispatch, RootState } from '../../../../core/store/store';
 import type { History } from "../interfaces/history.interface";
 
@@ -30,8 +28,6 @@ export const getHistory = (id: string) => {
             const { isLoadingHistorySelected } = getState().history;
             if (!isLoadingHistorySelected) {
                 dispatch(startLoadingHistoriesSelected());
-                //const history: History = await fetchGetHistory(id);
-                //await dispatch(setHistorySelected({ history }));
             }
         } catch (error: any) {
             dispatch(setAlert({ type: 'error', message: 'Ocurrió un error oteniendo el historico.' }));

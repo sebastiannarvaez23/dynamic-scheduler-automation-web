@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 
 import type { History } from '../interfaces/history.interface';
 
@@ -44,7 +45,7 @@ const initialState: HistoryState = {
     filters: {},
     count: 0,
     histories: [],
-}
+};
 
 export const historySlice = createSlice({
     name: 'history',
@@ -56,40 +57,65 @@ export const historySlice = createSlice({
         startLoadingHistoriesSelected: (state) => {
             state.isLoadingHistorySelected = true;
         },
-        setHistories: (state, action) => {
+        setHistories: (state, action: PayloadAction<{ histories: History[] }>) => {
             state.histories = action.payload.histories;
             state.isLoadingHistories = false;
         },
-        setPage: (state, action) => {
+        setPage: (state, action: PayloadAction<{ page: number }>) => {
             state.page = action.payload.page;
         },
         clearFilters: (state) => {
             state.filters = {};
         },
-        setFilters: (state, action) => {
+        setFilters: (state, action: PayloadAction<Record<string, any>>) => {
             state.filters = action.payload;
         },
-        setCount: (state, action) => {
+        setCount: (state, action: PayloadAction<{ count: number }>) => {
             state.count = action.payload.count;
         },
-        setHistorySelected: (state, action) => {
+        setHistorySelected: (state, action: PayloadAction<{ history: History }>) => {
             state.historySelected = action.payload.history;
             state.isLoadingHistorySelected = false;
         },
         setEmptyHistorySelected: (state) => {
             state.historySelected = initialState.historySelected;
-        }
+        },
+
+        // 🚀 NUEVOS reducers socket:
+        addOrUpdateHistory: (state, action: PayloadAction<History>) => {
+            const index = state.histories.findIndex((h) => h.id === action.payload.id);
+            if (index === -1) {
+                // Insertar al inicio
+                state.histories.unshift(action.payload);
+            } else {
+                // Actualizar existente
+                state.histories[index] = action.payload;
+            }
+            state.histories = state.histories.slice(0, 10); // solo 10 visibles
+        },
+        deleteHistory: (state, action: PayloadAction<string>) => {
+            state.histories = state.histories.filter((h) => h.id !== action.payload);
+        },
+        setInitialSocketHistories: (state, action: PayloadAction<History[]>) => {
+            const sorted = [...action.payload].sort(
+                (a, b) => new Date(b.executionDate).getTime() - new Date(a.executionDate).getTime()
+            );
+            state.histories = sorted.slice(0, 10);
+        },
     },
-})
+});
 
 export const {
     startLoadingHistories,
-    setHistories,
-    setCount,
-    setHistorySelected,
     startLoadingHistoriesSelected,
-    setEmptyHistorySelected,
+    setHistories,
     setPage,
     setFilters,
-    clearFilters
+    clearFilters,
+    setCount,
+    setHistorySelected,
+    setEmptyHistorySelected,
+    addOrUpdateHistory,
+    deleteHistory,
+    setInitialSocketHistories,
 } = historySlice.actions;

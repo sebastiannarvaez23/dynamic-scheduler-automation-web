@@ -28,20 +28,29 @@ const HistoryPage = () => {
         filters,
         handleSetFilters,
         handleGetHistories,
-        handleSocketData,
+        handleSocketChange,
         handleInitialSocketData
     } = useHistory();
 
     return (
         <Fragment>
             <HistoryListener
+                onInitialData={(data, total, page) => {
+                    handleInitialSocketData(data, total, page);
+                }}
+                onChange={(changeData) => {
+                    handleSocketChange(changeData);
+                }}
                 ref={listenerRef}
-                onChange={handleSocketData}
-                onInitialData={handleInitialSocketData} />
+            />
             <LayoutPage>
                 <TitlePage title="Historial de ejecuciones" />
                 <div className="w-full my-5 px-10 text-right">
-                    <ButtonComponent type="button" label="Limpiar filtros" action={() => handleGetHistories(2)} />
+                    <ButtonComponent
+                        type="button"
+                        label="Limpiar filtros"
+                        action={() => handleGetHistories(0)}
+                    />
                 </div>
                 <div>
                     <TableComponent
@@ -50,7 +59,8 @@ const HistoryPage = () => {
                         totalElements={count}
                         filters={filters}
                         handleGetElements={handleGetHistories}
-                        handleSetFilters={handleSetFilters} />
+                        handleSetFilters={handleSetFilters}
+                    />
                 </div>
             </LayoutPage>
         </Fragment>

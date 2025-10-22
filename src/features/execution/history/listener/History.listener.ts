@@ -1,22 +1,31 @@
 import { useEffect, useRef, useImperativeHandle, forwardRef } from "react";
 
-import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
+import SockJS from "sockjs-client";
 
 
 interface HistoryListenerProps {
-    onChange: (data: any) => void;
-    onInitialData: (data: any[]) => void;
+    onChange: (data: any, totalElements: number) => void;
+    onInitialData: (data: any[], totalElements: number, page?: number) => void;
 }
 
 const HistoryListener = forwardRef(({ onChange, onInitialData }: HistoryListenerProps, ref) => {
     const clientRef = useRef<Client | null>(null);
-    const isInitializedRef = useRef(false);
+    const onChangeRef = useRef(onChange);
+    const onInitialDataRef = useRef(onInitialData);
 
     useEffect(() => {
-        if (isInitializedRef.current) return;
-        isInitializedRef.current = true;
+        onChangeRef.current = onChange;
+        onInitialDataRef.current = onInitialData;
+    }, [onChange, onInitialData]);
 
+    useEffect(() => {
+        if (clientRef.current) {
+            console.log("⚠️ WebSocket ya está conectado, ignorando...");
+            return;
+        }
+
+        console.log("🔌 Iniciando conexión WebSocket...");
         const socket = new SockJS("http://localhost:8080/ws-history");
 
         const stompClient = new Client({
@@ -29,14 +38,9 @@ const HistoryListener = forwardRef(({ onChange, onInitialData }: HistoryListener
 
                 stompClient.subscribe("/topic/history/initial", (message) => {
                     if (message.body) {
-                        try {
-                            const response = JSON.parse(message.body);
-                            const data = response.content;
-                            const totalElements = response.totalElements;
-                            onInitialData(data);
-                        } catch (error) {
-                            console.error("❌ Error parseando datos iniciales:", error);
-                        }
+                        const response = JSON.parse(message.body);
+                        console.log("📦 Datos paginados recibidos:", response);
+                        onInitialDataRef.current(response.content, response.totalElements, response.page);
                     }
                 });
 
@@ -44,9 +48,8 @@ const HistoryListener = forwardRef(({ onChange, onInitialData }: HistoryListener
                     if (message.body) {
                         try {
                             const response = JSON.parse(message.body);
-                            const data = response.content;
-                            const totalElements = response.totalElements;
-                            onChange(data);
+                            console.log("🔄 Cambio individual recibido:", response);
+                            onChangeRef.current(response, response.totalElements);
                         } catch (error) {
                             console.error("❌ Error parseando cambio:", error);
                         }
@@ -58,26 +61,30 @@ const HistoryListener = forwardRef(({ onChange, onInitialData }: HistoryListener
                     body: JSON.stringify({ page: 0, size: 10 }),
                 });
             },
-            onDisconnect: () => console.log("❌ Desconectado de WebSocket (/history)"),
-            onStompError: (frame) =>
-                console.error("❌ Error STOMP (/history):", frame.headers["message"]),
+            onDisconnect: () => {
+                console.log("❌ Desconectado de WebSocket (/history)");
+            },
+            onStompError: (frame) => {
+                console.error("❌ Error STOMP (/history):", frame.headers["message"]);
+            },
         });
 
         clientRef.current = stompClient;
         stompClient.activate();
 
         return () => {
-            isInitializedRef.current = false;
+            console.log("🧹 Limpiando conexión WebSocket...");
             if (clientRef.current) {
                 clientRef.current.deactivate();
                 clientRef.current = null;
             }
         };
-    }, [onChange, onInitialData]);
+    }, []);
 
     useImperativeHandle(ref, () => ({
         requestPage: (page: number, size = 10) => {
             if (clientRef.current && clientRef.current.connected) {
+                console.log(`📤 Solicitando página ${page} con size ${size}`);
                 clientRef.current.publish({
                     destination: "/app/history/get",
                     body: JSON.stringify({ page, size }),
