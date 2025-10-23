@@ -1,6 +1,6 @@
 import { Fragment } from "react/jsx-runtime";
 
-interface Option {
+export interface Option {
     key: string;
     value: string;
 }
@@ -8,9 +8,16 @@ interface Option {
 interface SelectComponentProps {
     label: string;
     options?: Option[];
+    selected?: Option;
+    onSelect: (id: string) => void;
 }
 
 const SelectComponent = (props: SelectComponentProps) => {
+
+    const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        props.onSelect(event.target.value);
+    }
+
     return (
         <Fragment>
             <div className="p-2 my-3">
@@ -21,8 +28,10 @@ const SelectComponent = (props: SelectComponentProps) => {
                         defaultValue=""
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
                             focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-8
-                            appearance-none">
-                        <option value="" disabled>
+                            appearance-none"
+                        value={props.selected?.key ?? ""}
+                        onChange={handleSelect}>
+                        <option value="">
                             {`Seleccione ${props.label.length > 15
                                 ? props.label.toLowerCase().slice(0, 15) + "..."
                                 : props.label.toLowerCase()

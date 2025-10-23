@@ -21,7 +21,7 @@ function useHistory() {
         isLoadingHistories
     } = useSelector((state: RootState) => state.history);
 
-    const listenerRef = useRef<{ requestPage: (page: number, size?: number) => void }>(null);
+    const listenerRef = useRef<{ requestPage: (page: number, size?: number, filters?: Record<string, any>) => void }>(null);
 
     const [modalCreate, setModalCreate] = useState(false);
     const [modalUpdate, setModalUpdate] = useState(false);
@@ -61,7 +61,7 @@ function useHistory() {
     const handleGetHistories = useCallback((page: number, filters?: Record<string, any>) => {
         console.log(`🔍 Solicitando página ${page}`);
         dispatch(startLoadingHistories());
-        listenerRef.current?.requestPage(page, 10);
+        listenerRef.current?.requestPage(page, 10, filters);
     }, [dispatch]);
 
     const handleSocketChange = useCallback((message: { type: string; content: History; totalElements: number }) => {

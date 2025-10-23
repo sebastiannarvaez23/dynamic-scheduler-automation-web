@@ -7,29 +7,29 @@ import HistoryListener from "../listener/History.listener";
 import TableComponent from "../../../../core/components/Table.component";
 import type { Header } from "../../../../core/interfaces/header.interface";
 import useHistory from "../hooks/useHistory.hook";
+import type { Option } from "../../../../core/components/Select.componet";
 
 
 const HistoryPage = () => {
 
     const load = { loading: "RUNNING", complete: "COMPLETED", fail: "FAILED" };
+    const options: Option[] = [
+        { key: "RUNNING", value: "RUNNING" },
+        { key: "COMPLETED", value: "COMPLETED" },
+        { key: "FAILED", value: "FAILED" },
+    ]
     const headers: Header[] = [
         { label: 'Nombre tarea', field: "task.name", typeFilter: 'input', filter: true, format: 'text' },
         { label: 'Fecha ejecución', field: "executionDate", typeFilter: 'date', filter: true, format: 'date' },
         { label: 'Hora ejecución', field: "executionHour", typeFilter: undefined, filter: false, format: 'hour' },
         { label: 'Tiempo de ejecución', field: "executionTime", typeFilter: undefined, filter: false, format: 'duration' },
         { label: 'Empresa', field: "company.name", typeFilter: 'select', filter: false, format: undefined },
-        { label: 'Estado', field: "status", typeFilter: 'select', filter: false, format: undefined, load: load },
+        { label: 'Estado', field: "status", typeFilter: 'select', filter: false, format: undefined, options: options, load: load },
     ];
 
     const {
-        listenerRef,
-        histories,
-        count,
-        filters,
-        handleSetFilters,
-        handleGetHistories,
-        handleSocketChange,
-        handleInitialSocketData
+        listenerRef, histories, count, filters,
+        handleSetFilters, handleGetHistories, handleSocketChange, handleInitialSocketData
     } = useHistory();
 
     return (

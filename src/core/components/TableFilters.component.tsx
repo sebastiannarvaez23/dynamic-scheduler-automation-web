@@ -71,7 +71,12 @@ const TableFiltersComponent = ({ headers, filters, onFiltersChange, handleGetEle
                         case "select":
                             return (
                                 <div key={key} className="flex flex-col w-full sm:w-[220px]">
-                                    <SelectComponent label={header.label} />
+                                    <SelectComponent
+                                        label={header.label}
+                                        options={header.options}
+                                        selected={filters[key] || ""}
+                                        onSelect={(val) => handleChange(key, val)}
+                                    />
                                 </div>
                             );
 
@@ -89,7 +94,11 @@ const TableFiltersComponent = ({ headers, filters, onFiltersChange, handleGetEle
                         case "date":
                             return (
                                 <div key={key} className="flex flex-col">
-                                    <DatepickerComponent label={header.label} />
+                                    <DatepickerComponent
+                                        label={header.label}
+                                        search={filters[key] || ""}
+                                        onSearch={(val) => handleChange(key, val)}
+                                    />
                                 </div>
                             );
 

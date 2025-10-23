@@ -82,12 +82,12 @@ const HistoryListener = forwardRef(({ onChange, onInitialData }: HistoryListener
     }, []);
 
     useImperativeHandle(ref, () => ({
-        requestPage: (page: number, size = 10) => {
+        requestPage: (page: number, size = 10, filters?: Record<string, any>) => {
             if (clientRef.current && clientRef.current.connected) {
-                console.log(`📤 Solicitando página ${page} con size ${size}`);
+                console.log(`📤 Solicitando página ${page} con filtros:`, filters);
                 clientRef.current.publish({
                     destination: "/app/history/get",
-                    body: JSON.stringify({ page, size }),
+                    body: JSON.stringify({ page, size, filters }),
                 });
             } else {
                 console.warn("⚠️ WebSocket no conectado aún");
