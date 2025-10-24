@@ -13,8 +13,22 @@ const DatepickerComponent = ({ label, search, onSearch }: DatepickerComponentPro
 
     useEffect(() => {
         if (search) {
-            const [day, month, year] = search.split("/");
-            setStartDate(new Date(`${year}-${month}-${day}`));
+            let localDate: Date | null = null;
+
+            if (search.includes("/")) {
+                const [day, month, year] = search.split("/");
+                localDate = new Date(Number(year), Number(month) - 1, Number(day));
+            } else if (search.includes("-")) {
+                const [year, month, day] = search.split("-");
+                localDate = new Date(Number(year), Number(month) - 1, Number(day));
+            }
+
+            if (!isNaN(localDate!.getTime())) {
+                setStartDate(localDate);
+            } else {
+                console.warn("⚠️ Fecha inválida recibida:", search);
+                setStartDate(null);
+            }
         } else {
             setStartDate(null);
         }
@@ -23,7 +37,8 @@ const DatepickerComponent = ({ label, search, onSearch }: DatepickerComponentPro
     const handleChange = (date: Date | null) => {
         setStartDate(date);
         if (date) {
-            const formatted = date.toLocaleDateString("es-ES");
+            // Formato local yyyy-MM-dd (sin convertir a UTC)
+            const formatted = date.toLocaleDateString("en-CA");
             onSearch(formatted);
         } else {
             onSearch("");

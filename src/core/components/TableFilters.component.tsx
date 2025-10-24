@@ -26,11 +26,10 @@ const TableFiltersComponent = ({ headers, filters, onFiltersChange, handleGetEle
 
     useEffect(() => {
         onFiltersChange?.(filters);
-        const { cronExpression, ...rest } = filters;
-        handleGetElements(0, {
-            cronExpression: cronExpression ? timeToCron(cronExpression) : undefined,
-            ...rest,
-        });
+        const filterData: Record<string, any> = { ...filters };
+        if (filterData.cronExpression) filterData.cronExpression = timeToCron(filterData.cronExpression);
+        handleGetElements(0, filterData);
+
     }, [filters]);
 
     return (

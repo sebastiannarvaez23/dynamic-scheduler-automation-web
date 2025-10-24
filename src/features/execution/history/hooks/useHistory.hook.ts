@@ -59,7 +59,7 @@ function useHistory() {
     }, [dispatch]);
 
     const handleGetHistories = useCallback((page: number, filters?: Record<string, any>) => {
-        console.log(`🔍 Solicitando página ${page}`);
+        console.log(`🔍 Solicitando página ${page} filters ${filters}`);
         dispatch(startLoadingHistories());
         listenerRef.current?.requestPage(page, 10, filters);
     }, [dispatch]);
