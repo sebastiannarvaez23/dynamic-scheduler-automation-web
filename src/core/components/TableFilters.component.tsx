@@ -73,8 +73,15 @@ const TableFiltersComponent = ({ headers, filters, onFiltersChange, handleGetEle
                                     <SelectComponent
                                         label={header.label}
                                         options={header.options}
-                                        selected={filters[key] || ""}
-                                        onSelect={(val) => handleChange(key, val)}
+                                        selected={
+                                            typeof filters[key] === "object"
+                                                ? filters[key]
+                                                : header.options?.find(o => o.key === filters[key])
+                                        }
+                                        onSelect={(val) => {
+                                            const option = header.options?.find(o => o.key === val);
+                                            handleChange(key, option?.key);
+                                        }}
                                     />
                                 </div>
                             );

@@ -14,9 +14,9 @@ const HistoryPage = () => {
 
     const load = { loading: "RUNNING", complete: "COMPLETED", fail: "FAILED" };
     const options: Option[] = [
-        { key: "RUNNING", value: "RUNNING" },
-        { key: "COMPLETED", value: "COMPLETED" },
-        { key: "FAILED", value: "FAILED" },
+        { key: "RUNNING", value: "Ejecutando" },
+        { key: "COMPLETED", value: "Completado" },
+        { key: "FAILED", value: "Fallido" },
     ]
     const headers: Header[] = [
         { label: 'Nombre tarea', field: "task.name", typeFilter: 'input', filter: true, format: 'text' },
@@ -29,7 +29,7 @@ const HistoryPage = () => {
 
     const {
         listenerRef, histories, count, filters,
-        handleSetFilters, handleGetHistories, handleSocketChange, handleInitialSocketData
+        handleSetFilters, handleGetHistories, handleSocketChange, handleInitialSocketData, handleCleanFilters
     } = useHistory();
 
     return (
@@ -49,7 +49,7 @@ const HistoryPage = () => {
                     <ButtonComponent
                         type="button"
                         label="Limpiar filtros"
-                        action={() => handleGetHistories(0)}
+                        action={() => handleCleanFilters()}
                     />
                 </div>
                 <div>

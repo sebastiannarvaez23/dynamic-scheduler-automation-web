@@ -1,4 +1,5 @@
-import { Fragment } from "react/jsx-runtime";
+import { Fragment } from "react";
+
 
 interface TitlePageProps {
     title: string;

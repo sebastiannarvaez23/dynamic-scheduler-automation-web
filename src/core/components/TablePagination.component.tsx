@@ -1,6 +1,8 @@
 import { Fragment, useEffect } from "react";
 
+
 interface PaginationProps {
+    filters: Record<string, any>;
     currentPage: number;
     totalRecords: number;
     onPageChange: (page: number) => void;
@@ -8,6 +10,7 @@ interface PaginationProps {
 }
 
 const PaginationComponent = ({
+    filters,
     currentPage,
     totalRecords,
     onPageChange,
@@ -23,7 +26,7 @@ const PaginationComponent = ({
 
     const changePage = (newPage: number) => {
         if (newPage >= 0 && newPage <= totalPages) {
-            handleGetElements(newPage);
+            handleGetElements(newPage, filters);
         }
     }
 

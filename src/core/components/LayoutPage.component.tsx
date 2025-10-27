@@ -2,7 +2,6 @@ import { Fragment } from "react";
 import { SocketListener } from "../listener/SocketListener.listener";
 
 
-
 interface LayoutPageProps {
     children: React.ReactNode;
 }

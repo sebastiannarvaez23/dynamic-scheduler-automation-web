@@ -7,6 +7,7 @@ import DialogComponent from "./Dialog.component";
 
 import type { Header } from "../interfaces/header.interface";
 
+
 interface TableComponentProps {
     headers: Header[];
     data: any[];
@@ -287,6 +288,7 @@ const TableComponent = (props: TableComponentProps) => {
             </div>
 
             <PaginationComponent
+                filters={props.filters}
                 currentPage={currentPage}
                 totalRecords={props.totalElements}
                 onPageChange={(newPage) => setCurrentPage(newPage)}

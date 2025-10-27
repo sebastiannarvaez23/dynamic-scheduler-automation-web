@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+
 
 interface DatepickerComponentProps {
     label: string;
@@ -37,7 +39,6 @@ const DatepickerComponent = ({ label, search, onSearch }: DatepickerComponentPro
     const handleChange = (date: Date | null) => {
         setStartDate(date);
         if (date) {
-            // Formato local yyyy-MM-dd (sin convertir a UTC)
             const formatted = date.toLocaleDateString("en-CA");
             onSearch(formatted);
         } else {
