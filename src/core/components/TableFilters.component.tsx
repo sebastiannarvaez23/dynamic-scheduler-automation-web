@@ -8,6 +8,7 @@ import TimepickerComponent from "./Timepicker.component";
 import ToggleComponent from "./Toggle.component";
 
 import type { Header } from "../interfaces/header.interface";
+import ComboboxDbounceComponent from "./ComboboxDbounce.component";
 
 
 interface TableFiltersComponentProps {
@@ -81,6 +82,28 @@ const TableFiltersComponent = ({ headers, filters, onFiltersChange, handleGetEle
                                         onSelect={(val) => {
                                             const option = header.options?.find(o => o.key === val);
                                             handleChange(key, option?.key);
+                                        }}
+                                    />
+                                </div>
+                            );
+
+                        case "combobox":
+                            return (
+                                <div key={key} className="flex flex-col w-full sm:w-[220px]">
+                                    <ComboboxDbounceComponent
+                                        label={header.label}
+                                        placeholder={`Buscar ${header.label.toLowerCase()}...`}
+                                        search={
+                                            typeof filters[key] === "object"
+                                                ? filters[key]?.value || ""
+                                                : filters[key] || ""
+                                        }
+                                        options={header.options}
+                                        onSearch={(val) => {
+                                            header.extra?.handleGetCompanys?.(0, { name: val });
+                                        }}
+                                        onSelect={(opt) => {
+                                            handleChange(key, opt.value);
                                         }}
                                     />
                                 </div>

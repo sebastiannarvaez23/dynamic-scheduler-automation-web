@@ -6,31 +6,36 @@ import ButtonComponent from "../../../../core/components/Button.component";
 import HistoryListener from "../listener/History.listener";
 import TableComponent from "../../../../core/components/Table.component";
 import type { Header } from "../../../../core/interfaces/header.interface";
+import type { Option as OptionCombobox } from "../../../../core/components/ComboboxDbounce.component";
+import type { Option as OptionSelect } from "../../../../core/components/Select.componet";
+import useCompany from "../../company/hooks/useCompany.hook";
 import useHistory from "../hooks/useHistory.hook";
-import type { Option } from "../../../../core/components/Select.componet";
 
 
 const HistoryPage = () => {
-
-    const load = { loading: "RUNNING", complete: "COMPLETED", fail: "FAILED" };
-    const options: Option[] = [
-        { key: "RUNNING", value: "Ejecutando" },
-        { key: "COMPLETED", value: "Completado" },
-        { key: "FAILED", value: "Fallido" },
-    ]
-    const headers: Header[] = [
-        { label: 'Nombre tarea', field: "task.name", typeFilter: 'input', filter: true, format: 'text' },
-        { label: 'Fecha ejecución', field: "executionDate", typeFilter: 'date', filter: true, format: 'date' },
-        { label: 'Hora ejecución', field: "executionHour", typeFilter: undefined, filter: false, format: 'hour' },
-        { label: 'Tiempo de ejecución', field: "executionTime", typeFilter: undefined, filter: false, format: 'duration' },
-        { label: 'Empresa', field: "company.name", typeFilter: 'select', filter: false, format: undefined },
-        { label: 'Estado', field: "status", typeFilter: 'select', filter: false, format: undefined, options: options, load: load },
-    ];
 
     const {
         listenerRef, histories, count, filters,
         handleSetFilters, handleGetHistories, handleSocketChange, handleInitialSocketData, handleCleanFilters
     } = useHistory();
+
+    const { companies, handleGetCompanys } = useCompany();
+
+    const load = { loading: "RUNNING", complete: "COMPLETED", fail: "FAILED" };
+    const optionsStatus: OptionSelect[] = [
+        { key: "RUNNING", value: "Ejecutando" },
+        { key: "COMPLETED", value: "Completado" },
+        { key: "FAILED", value: "Fallido" },
+    ]
+    const optionsCompanies: OptionCombobox[] = companies.map(e => ({ key: e.id!, value: e.name }));
+    const headers: Header[] = [
+        { label: 'Nombre tarea', field: "task.name", typeFilter: 'input', filter: true, format: 'text' },
+        { label: 'Fecha ejecución', field: "executionDate", typeFilter: 'date', filter: true, format: 'date' },
+        { label: 'Hora ejecución', field: "executionHour", typeFilter: undefined, filter: false, format: 'hour' },
+        { label: 'Tiempo de ejecución', field: "executionTime", typeFilter: undefined, filter: false, format: 'duration' },
+        { label: 'Empresa', field: "company.name", typeFilter: 'combobox', filter: true, format: 'text', options: optionsCompanies, extra: { handleGetCompanys } },
+        { label: 'Estado', field: "status", typeFilter: 'select', filter: false, format: undefined, options: optionsStatus, load: load },
+    ];
 
     return (
         <Fragment>
