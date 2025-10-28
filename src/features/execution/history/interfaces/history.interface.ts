@@ -1,4 +1,4 @@
-import type { Company } from "../../company/interfaces/company.interface";
+import type { Company } from "../../../tenant/company/interfaces/company.interface";
 import type { Task } from "../../task/interfaces/task.interface";
 
 export interface History {

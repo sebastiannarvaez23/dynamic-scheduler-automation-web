@@ -1,5 +1,5 @@
 import { setAlert } from '../../../../core/store/alert/slice';
-import { setPage, setHistories, startLoadingHistories, startLoadingHistoriesSelected, setCount } from "./slice";
+import { setPage, setHistories, startLoadingHistories, setCount } from "./slice";
 import type { AppDispatch, RootState } from '../../../../core/store/store';
 import type { History } from "../interfaces/history.interface";
 
@@ -18,19 +18,6 @@ export const getHistories = (histories: { content: History[], totalElements: num
             }
         } catch (error: any) {
             dispatch(setAlert({ type: 'error', message: 'Ocurrió un error oteniendo el historico de ejecuciones' }));
-        }
-    };
-};
-
-export const getHistory = (id: string) => {
-    return async (dispatch: AppDispatch, getState: () => RootState) => {
-        try {
-            const { isLoadingHistorySelected } = getState().history;
-            if (!isLoadingHistorySelected) {
-                dispatch(startLoadingHistoriesSelected());
-            }
-        } catch (error: any) {
-            dispatch(setAlert({ type: 'error', message: 'Ocurrió un error oteniendo el historico.' }));
         }
     };
 };
