@@ -5,10 +5,11 @@ import { TitlePage } from "../../../../core/components/TitlePage.component";
 import ButtonComponent from "../../../../core/components/Button.component";
 import HistoryListener from "../listener/History.listener";
 import TableComponent from "../../../../core/components/Table.component";
+import type { Company } from "../../../tenant/company/interfaces/company.interface";
 import type { Header } from "../../../../core/interfaces/header.interface";
 import type { Option as OptionCombobox } from "../../../../core/components/ComboboxDbounce.component";
 import type { Option as OptionSelect } from "../../../../core/components/Select.componet";
-import useCompany from "../../company/hooks/useCompany.hook";
+import useCompany from "../../../tenant/company/hooks/useCompany.hook";
 import useHistory from "../hooks/useHistory.hook";
 
 
@@ -27,7 +28,7 @@ const HistoryPage = () => {
         { key: "COMPLETED", value: "Completado" },
         { key: "FAILED", value: "Fallido" },
     ]
-    const optionsCompanies: OptionCombobox[] = companies.map(e => ({ key: e.id!, value: e.name }));
+    const optionsCompanies: OptionCombobox[] = companies.map((e: Company) => ({ key: e.id!, value: e.name }));
     const headers: Header[] = [
         { label: 'Nombre tarea', field: "task.name", typeFilter: 'input', filter: true, format: 'text' },
         { label: 'Fecha ejecución', field: "executionDate", typeFilter: 'date', filter: true, format: 'date' },

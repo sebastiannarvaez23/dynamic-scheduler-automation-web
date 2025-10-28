@@ -4,14 +4,16 @@ import * as Yup from "yup";
 
 import ButtonComponent from "../../../../core/components/Button.component";
 import FormInputComponent from '../../../../core/components/FormInput.component';
+import FormMultiselect, { type Option } from "../../../../core/components/FormMultiSelect.component";
 import FormTimepickerComponent from "../../../../core/components/FormTimepicker.component";
 import FormToggleComponent from "../../../../core/components/FormToggle.component";
-import FormMultiselect, { type Option } from "../../../../core/components/FormMultiSelect.component";
 
-import useTask from "../hooks/useTask.hook";
-import useCompany from "../../company/hooks/useCompany.hook";
-import type { Task } from "../interfaces/task.interface";
 import { timeToCron, cronToTime } from '../../../../utils/cron/timepicker-convert.util';
+import type { Company } from "../../../tenant/company/interfaces/company.interface";
+import type { Task } from "../interfaces/task.interface";
+import useCompany from "../../../tenant/company/hooks/useCompany.hook";
+import useTask from "../hooks/useTask.hook";
+
 
 interface FormCreateUpdateTaskProps {
     label: string;
@@ -25,7 +27,7 @@ const FormCreateUpdateTask = ({ label, action }: FormCreateUpdateTaskProps) => {
 
     const [search, setSearch] = useState("");
 
-    const companyOptions: Option[] = (companies || []).map((c) => ({ id: String(c.id), name: c.name }));
+    const companyOptions: Option[] = (companies || []).map((c: Company) => ({ id: String(c.id), name: c.name }));
 
     /** 
      * TODO: La logica del Dbounce se debe abstraer dentro del componente FormMultiselect

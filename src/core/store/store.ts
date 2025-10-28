@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import { alertSlice } from './alert/slice';
-import { companySlice } from '../../features/execution/company/store';
+import { companySlice } from '../../features/tenant/company/store';
 import { historySlice } from '../../features/execution/history/store';
 import { taskSlice } from '../../features/execution/task/store';
 
